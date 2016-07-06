@@ -34,6 +34,11 @@ public abstract class AbstractActieTest {
         public Pad omgekeerd() {
             return new MockPad();
         }
+
+        @Override
+        public Coordinaat volg(Coordinaat start) {
+            return start;
+        }
     }
 
     Wereld wereld;
