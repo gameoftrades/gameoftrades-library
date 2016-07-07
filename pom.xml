@@ -3,11 +3,17 @@
 
     <groupId>io.gameoftrades</groupId>
     <artifactId>gameoftrades-library</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Game of Trades Library</name>
     <description>Library for Game of Trades</description>
     <inceptionYear>2016</inceptionYear>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>9</version>
+    </parent>
 
     <licenses>
         <license>
@@ -63,17 +69,17 @@
           <build>
             <plugins>
           
-              <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.6</version>
-                <extensions>true</extensions>
-                <configuration>
-                  <serverId>ossrh</serverId>
-                  <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                  <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-              </plugin>
+              <!--<plugin>-->
+                <!--<groupId>org.sonatype.plugins</groupId>-->
+                <!--<artifactId>nexus-staging-maven-plugin</artifactId>-->
+                <!--<version>1.6.6</version>-->
+                <!--<extensions>true</extensions>-->
+                <!--<configuration>-->
+                  <!--<serverId>ossrh</serverId>-->
+                  <!--<nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
+                  <!--<autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+                <!--</configuration>-->
+              <!--</plugin>-->
           
               <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

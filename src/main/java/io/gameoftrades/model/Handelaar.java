@@ -12,12 +12,13 @@ import io.gameoftrades.model.markt.Handelsplan;
  * De Handelaar probeert zo snel mogelijk zo veel mogelijk geld te verdienen.
  * <p>
  * Om dit te kunnen doen moet hij in staat zijn om:
+ * </p>
  * <ul>
  * <li>het snelste pad tussen twee steden te kunnen vinden (opdracht 2)</li>
  * <li>een route te bepalen waarbij hij, zo snel mogelijk, iedere stad slechts 1 keer aandoet (opdracht 3)</li>
  * <li>een optimaal handelsplan samen te stellen (opdracht 4)</li>
- * </p>
- * Echter voordat het zo ver is moet eerst de handelswereld geladen kunnen worden via de Loader (opdracht 1). 
+ * </ul>
+ * <p>Echter voordat het zo ver is moet eerst de handelswereld geladen kunnen worden via de Loader (opdracht 1).</p> 
  */
 public interface Handelaar {
 
