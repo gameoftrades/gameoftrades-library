@@ -52,12 +52,15 @@ public class MainGui {
         display.setKaart(wereld.getKaart());
 
         List<SnelstePadAlgoritme> choices = new ArrayList<>();
+        choices.add(handelaar.nieuwSnelstePadAlgoritme());
         SnelstePadDebugPanel spd = new SnelstePadDebugPanel(display, wereld, choices);
 
         List<StedenTourAlgoritme> tspChoices = new ArrayList<>();
+        tspChoices.add(handelaar.nieuwStedenTourAlgoritme());
         TspDebugPanel tsp = new TspDebugPanel(display, wereld, tspChoices);
 
         List<HandelsplanAlgoritme> hplans = new ArrayList<>();
+        hplans.add(handelaar.nieuwHandelsplanAlgoritme());
         PlanDebugPanel pdb = new PlanDebugPanel(display, wereld, hplans);
 
         HandelsPositiePanel hpos = new HandelsPositiePanel();

@@ -1,12 +1,9 @@
 package io.gameoftrades.model;
 
-import java.util.List;
-
-import io.gameoftrades.model.kaart.Kaart;
-import io.gameoftrades.model.kaart.Pad;
-import io.gameoftrades.model.kaart.Stad;
+import io.gameoftrades.model.algoritme.HandelsplanAlgoritme;
+import io.gameoftrades.model.algoritme.SnelstePadAlgoritme;
+import io.gameoftrades.model.algoritme.StedenTourAlgoritme;
 import io.gameoftrades.model.lader.WereldLader;
-import io.gameoftrades.model.markt.Handelsplan;
 
 /**
  * De Handelaar probeert zo snel mogelijk zo veel mogelijk geld te verdienen.
@@ -29,31 +26,21 @@ public interface Handelaar {
     WereldLader nieuweWereldLader();
 
     /**
-     * bepaalt het snelste pad tussen twee steden (opdracht 2).
-     * @param kaart de kaart met het terrein dat de snelheid van reizen bepaalt.
-     * @param van de stad waarvan vertrokken wordt.
-     * @param naar de stad waar naar toe gereist wordt. 
-     * @return het snelste pad tussen de twee steden (dat is niet altijd het kortste pad!)
+     * Maakt een nieuwe instantie van het snelste pad algoritme.
+     * @return het algoritme om het snelste pad tussen 2 steden te bepalen (opdracht 2).
      */
-    Pad bepaalSnelstePad(Kaart kaart, Stad van, Stad naar);
+    SnelstePadAlgoritme nieuwSnelstePadAlgoritme();
 
     /**
-     * bepaalt de beste volgorde van reizen tussen de steden zodat dit het minste tijd kost en
-     * iedere stad slechts 1 keer wordt aangedaan (opdracht 3).
-     * @param kaart de kaart waarop de steden liggen. 
-     * @param steden de steden die aangedaan moeten worden.
-     * @return een lijst op volgorde waarin de steden aangedaan moeten worden.
+     * Maakt een nieuwe instantie van het steden tour algoritme.
+     * @return het algoritme om een zo optimaal mogelijke steden tour te bepalen (opdracht 3).
      */
-    List<Stad> stedenTour(Kaart kaart, List<Stad> steden);
+    StedenTourAlgoritme nieuwStedenTourAlgoritme();
 
     /**
-     * maakt een handelsplan dat zo veel mogelijk winst maakt in zo min mogelijk tijd (opdracht 4).
-     * @param wereld de wereld waarvoor het handelsplan gemaakt moet worden. 
-     * @param startStad de stad waarin gestart wordt.
-     * @param kapitaal het start kapitaal om mee in te kopen.
-     * @param capaciteit de maximale opslag capaciteit.
-     * @param maxTijd het maximaal aantal te gebruiken bewegingspunten. 
-     * @return het plan.
+     * Maakt een nieuwe instantie van het handelsplan algoritme.
+     * @return het algoritme om zo veel mogelijk geld te verdienen in zo min mogelijk tijd (opdracht 4).
      */
-    Handelsplan optimaliseerWinst(Wereld wereld, Stad startStad, int kapitaal, int capaciteit, int maxTijd);
+    HandelsplanAlgoritme nieuwHandelsplanAlgoritme();
+
 }
