@@ -7,11 +7,11 @@ import io.gameoftrades.model.kaart.Pad;
 public interface SnelstePadAlgoritme {
 
     /**
-     * bepaalt het snelste pad tussen twee steden (opdracht 2).
+     * bepaalt het snelste pad tussen twee coordinaten (opdracht 2).
      * @param kaart de kaart met het terrein dat de snelheid van reizen bepaalt.
-     * @param van de stad waarvan vertrokken wordt.
-     * @param naar de stad waar naar toe gereist wordt. 
-     * @return het snelste pad tussen de twee steden (dat is niet altijd het kortste pad!)
+     * @param start het coordinaat waarvan vertrokken wordt.
+     * @param eind het coordinaat waar naar toe gereist wordt. 
+     * @return het snelste pad tussen de twee coordinaten (dat is niet altijd het kortste pad!)
      */
     Pad bereken(Kaart kaart, Coordinaat start, Coordinaat eind);
 
