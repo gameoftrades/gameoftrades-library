@@ -1,62 +1,64 @@
-package io.gameoftrades.util;
+package io.gameoftrades.debug;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import io.gameoftrades.model.kaart.Coordinaat;
 import io.gameoftrades.model.kaart.Kaart;
 import io.gameoftrades.model.kaart.Pad;
 import io.gameoftrades.model.kaart.Richting;
+import io.gameoftrades.model.kaart.Stad;
+import io.gameoftrades.model.markt.Handelsplan;
+import io.gameoftrades.model.markt.actie.HandelsPositie;
 
 /**
- * Een verzameling handige visualisaties voor debug doeleinden.
+ * Rendert ascii art representaties van de kaart en paden. 
  */
-public final class DebugTool {
-
-    /**
-     * rendert een kaart met een coordinaat.
-     * @param kaart de kaart.
-     * @param c het coordinaat (. op de kaart).
-     */
-    public static void render(Kaart kaart, Coordinaat c) {
-        System.out.println(render(kaart, 1, (pos) -> c.equals(pos) ? "." : null));
-    }
+public class AsciiArtDebugger implements Debugger {
 
     /**
      * rendert een kaart met een lijst van coordinaten.
      * @param kaart de kaart.
      * @param c de lijst van coordinaten.
      */
-    public static void render(Kaart kaart, List<Coordinaat> c) {
+    @Override
+    public void debugCoordinaten(Kaart kaart, List<Coordinaat> c) {
         System.out.println(render(kaart, 1, (pos) -> c.contains(pos) ? "." : null));
     }
 
-    /**
-     * rendert een kaart met een pad dat begin op het start coordinaat.
-     * @param kaart de kaart.
-     * @param start het start coordinaat.
-     * @param pad het pad.
-     */
-    public static void render(Kaart kaart, Coordinaat start, Pad pad) {
+    @Override
+    public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> map, boolean highlight) {
+        System.out.println(render(kaart,3,(pos) -> {
+           Object o = map.get(pos);
+           if(o!=null) {
+                String tmp = String.valueOf(o);
+                while (tmp.length() < 2) {
+                    tmp = tmp + " ";
+                }
+                return tmp.substring(0, 2);
+           } else {
+               return null;
+           }
+        }));
+    }
+
+    @Override
+    public void debugPad(Kaart kaart, Coordinaat start, Pad pad) {
         List<Coordinaat> c = new ArrayList<>();
         c.add(start);
         for (Richting r : pad.getBewegingen()) {
             start = start.naar(r);
             c.add(start);
         }
-        render(kaart, c);
+        debugCoordinaten(kaart, c);
     }
 
-    /**
-     * tekent een nummerieke laag over de kaart heen, daar
-     * waar de waarden niet null zijn.
-     * @param kaart de kaart.
-     * @param overlay, een array[y][x] met dezelfde grootte als de kaart.
-     */
-    public static void render(Kaart kaart, Integer[][] overlay) {
+    @Override
+    public void debugRaster(Kaart kaart, Integer[][] raster) {
         System.out.println(render(kaart, 3, (pos) -> {
-            Integer value = overlay[pos.getY()][pos.getX()];
+            Integer value = raster[pos.getY()][pos.getX()];
             if (value == null) {
                 return null;
             }
@@ -64,20 +66,14 @@ public final class DebugTool {
         }));
     }
 
-    /**
-     * tekent een nummerieke laag over de kaart heen, daar
-     * waar de waarden niet 0 zijn.
-     * @param kaart de kaart.
-     * @param overlay, een array[y][x] met dezelfde grootte als de kaart.
-     */
-    public static void render(Kaart kaart, int[][] overlay) {
-        System.out.println(render(kaart, 3, (pos) -> {
-            int value = overlay[pos.getY()][pos.getX()];
-            if (value == 0) {
-                return null;
-            }
-            return (value < 10 ? "0" : "") + String.valueOf(value);
-        }));
+    @Override
+    public void debugSteden(Kaart kaart, List<Stad> steden) {
+        System.out.println(String.valueOf(steden));
+    }
+
+    @Override
+    public PlanControl speelPlanAf(Handelsplan plan, HandelsPositie initieel) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -87,7 +83,7 @@ public final class DebugTool {
      * @param func de functie.
      * @return de gerenderde kaart as string.
      */
-    public static String render(Kaart kaart, int vakBreedte, Function<Coordinaat, String> func) {
+    public String render(Kaart kaart, int vakBreedte, Function<Coordinaat, String> func) {
         StringBuilder sb = new StringBuilder();
         for (int y = 0; y < kaart.getHoogte(); y++) {
             for (int x = 0; x < kaart.getBreedte(); x++) {
