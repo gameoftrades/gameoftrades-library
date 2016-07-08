@@ -26,8 +26,8 @@ import io.gameoftrades.model.markt.actie.HandelsPositie;
 
 public class KaartDisplay extends JPanel implements PlanControl {
 
-    private static final Color PAD_KLEUR = new Color(160, 255, 160);
-    private static final Color TOUR_KLEUR = new Color(80, 120, 80);
+    private static final Color PAD_KLEUR = new Color(220, 255, 220);
+    private static final Color TOUR_KLEUR = new Color(40, 80, 255);
     private static final Color OVERLAY_KLEUR = new Color(240, 255, 240);
 
     private int tilesize = 16;
@@ -131,9 +131,14 @@ public class KaartDisplay extends JPanel implements PlanControl {
         this.repaint();
     }
 
-    public void setOpenClosed(Map<Coordinaat, ?> open, Map<Coordinaat, ?> closed) {
-        this.open = open;
-        this.closed = closed;
+    public void setCoordinaten(Map<Coordinaat, ?> coords) {
+        this.open = coords;
+        this.repaint();
+    }
+
+    public void setOpenClosed(Map<Coordinaat, ?> outer, Map<Coordinaat, ?> inner) {
+        this.open = outer;
+        this.closed = inner;
         this.repaint();
     }
 
@@ -146,9 +151,6 @@ public class KaartDisplay extends JPanel implements PlanControl {
         Graphics2D g = (Graphics2D) gg;
         if (kaart != null) {
             tekenKaart(g);
-        }
-        if ((pad != null) && (start != null)) {
-            tekenPad(g);
         }
         if (steden != null) {
             tekenStedenTour(g);
@@ -168,6 +170,9 @@ public class KaartDisplay extends JPanel implements PlanControl {
         }
         if (closed != null) {
             drawOpenClosed(g, closed, Color.RED);
+        }
+        if ((pad != null) && (start != null)) {
+            tekenPad(g);
         }
     }
 
@@ -223,6 +228,7 @@ public class KaartDisplay extends JPanel implements PlanControl {
         g.setColor(PAD_KLEUR);
         int x = start.getX() * tilesize + 7;
         int y = start.getY() * tilesize + 7;
+        g.fillOval(x - 3, y - 3, 7, 7);
         int lx = x;
         int ly = y;
         for (Richting r : pad.getBewegingen()) {
@@ -244,8 +250,8 @@ public class KaartDisplay extends JPanel implements PlanControl {
             lx = x;
             ly = y;
         }
+        g.fillOval(x - 3, y - 3, 7, 7);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-
     }
 
     private void tekenKaart(Graphics g) {

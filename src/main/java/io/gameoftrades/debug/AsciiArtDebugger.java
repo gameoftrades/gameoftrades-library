@@ -29,7 +29,26 @@ public class AsciiArtDebugger implements Debugger {
     }
 
     @Override
-    public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> map, boolean highlight) {
+    public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open, Map<Coordinaat, ?> closed) {
+        System.out.println(render(kaart, 3, (pos) -> {
+            Object o = open.get(pos);
+            if (o == null) {
+                o = closed.get(pos);
+            }
+            if (o != null) {
+                String tmp = String.valueOf(o);
+                while (tmp.length() < 2) {
+                    tmp = tmp + " ";
+                }
+                return tmp.substring(0, 2);
+            } else {
+                return null;
+            }
+        }));
+    }
+
+    @Override
+    public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> map) {
         System.out.println(render(kaart,3,(pos) -> {
            Object o = map.get(pos);
            if(o!=null) {

@@ -21,7 +21,11 @@ public class DummyDebugger implements Debugger {
     }
 
     @Override
-    public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> map, boolean highlight) {
+    public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> map) {
+    }
+
+    @Override
+    public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open, Map<Coordinaat, ?> closed) {
     }
 
     @Override

@@ -1,11 +1,13 @@
 package io.gameoftrades.ui;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -20,16 +22,28 @@ import io.gameoftrades.model.markt.actie.HandelsPositie;
 
 public abstract class AbstractDebugPanel extends JPanel {
 
-    public class GuiDebugger implements io.gameoftrades.debug.Debugger {
+    public class GuiDebugger implements Debugger {
 
         @Override
-        public void debugCoordinaten(Kaart kaart, List<Coordinaat> c) {
-            // TODO Auto-generated method stub
+        public void debugCoordinaten(Kaart kaart, List<Coordinaat> cs) {
+            Map<Coordinaat, String> map = new HashMap<>();
+            for (Coordinaat c : cs) {
+                map.put(c, "X");
+            }
+            debugCoordinaten(kaart, map);
         }
+
         @Override
-        public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open, boolean highlight) {
+        public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open) {
             kaartDisplay.setKaart(kaart);
-            kaartDisplay.setOpenClosed(open, open);
+            kaartDisplay.setCoordinaten(open);
+            waitForStep();
+        }
+
+        @Override
+        public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open, Map<Coordinaat, ?> closed) {
+            kaartDisplay.setKaart(kaart);
+            kaartDisplay.setOpenClosed(open, closed);
             waitForStep();
         }
 
@@ -63,6 +77,7 @@ public abstract class AbstractDebugPanel extends JPanel {
     private JButton startButton = new JButton(">> Start");
     private JButton stepButton = new JButton("> Step");
     private JButton stopButton = new JButton("[ ] Stop");
+    private JCheckBox autoStep = new JCheckBox("Auto step");
 
     private KaartDisplay kaartDisplay;
     private Object stepLock = new Object();
@@ -76,6 +91,7 @@ public abstract class AbstractDebugPanel extends JPanel {
         startButton.setEnabled(true);
         stopButton.setEnabled(false);
         stepButton.setEnabled(false);
+        stepButton.setDefaultCapable(true);
 
         startButton.addActionListener((e) -> doStart());
         stepButton.addActionListener((e) -> doStep());
@@ -89,6 +105,8 @@ public abstract class AbstractDebugPanel extends JPanel {
         btns.add(stepButton);
         btns.add(Box.createHorizontalStrut(8));
         btns.add(stopButton);
+        btns.add(Box.createHorizontalStrut(8));
+        btns.add(autoStep);
         return btns;
     }
 
@@ -136,6 +154,13 @@ public abstract class AbstractDebugPanel extends JPanel {
         try {
             SwingUtilities.invokeAndWait(() -> {
                 stepButton.setEnabled(true);
+                if (autoStep.isSelected()) {
+                    SwingUtilities.invokeLater(() -> {
+                        if (stepButton.isEnabled()) {
+                            stepButton.doClick();
+                        }
+                    });
+                }
             });
             try {
                 synchronized (stepLock) {
