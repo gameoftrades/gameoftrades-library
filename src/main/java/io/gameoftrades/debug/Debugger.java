@@ -9,6 +9,7 @@ import io.gameoftrades.model.kaart.Pad;
 import io.gameoftrades.model.kaart.Stad;
 import io.gameoftrades.model.markt.Handel;
 import io.gameoftrades.model.markt.Handelsplan;
+import io.gameoftrades.model.markt.actie.Actie;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
 
 public interface Debugger {
@@ -87,6 +88,14 @@ public interface Debugger {
      * @param handel de handel.
      */
     void debugHandel(Kaart kaart, List<Handel> handel);
+
+    /**
+     * laat de beweeg acties zien.
+     * @param kaart de kaart.
+     * @param positie de huidige positie.
+     * @param acties de beweeg acties.
+     */
+    void debugActies(Kaart kaart, HandelsPositie positie, List<Actie> acties);
 
     /**
      * Speelt een volledig plan af op de kaart.

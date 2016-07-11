@@ -55,6 +55,7 @@ public final class HandelsPositie {
         }
         copy.stad = naar;
         copy.totaalActie += bw;
+        copy.coordinaat = naar.getCoordinaat();
         return copy;
     }
 
@@ -261,6 +262,11 @@ public final class HandelsPositie {
      */
     public boolean isActieBeschikbaar(int actie) {
         return !gestopt && getTotaalActie() + actie <= getMaxActie();
+    }
+    
+    @Override
+    public String toString() {
+        return "HandelsPositie("+getCoordinaat()+","+getTotaalActie()+","+getTotaalWinst()+")";
     }
 
 }

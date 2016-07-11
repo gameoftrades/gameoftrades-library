@@ -19,6 +19,7 @@ import io.gameoftrades.model.kaart.Pad;
 import io.gameoftrades.model.kaart.Stad;
 import io.gameoftrades.model.markt.Handel;
 import io.gameoftrades.model.markt.Handelsplan;
+import io.gameoftrades.model.markt.actie.Actie;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
 
 public abstract class AbstractDebugPanel extends JPanel {
@@ -73,6 +74,14 @@ public abstract class AbstractDebugPanel extends JPanel {
         public void debugHandel(Kaart kaart, List<Handel> handel) {
             kaartDisplay.setKaart(kaart);
             kaartDisplay.setHandel(handel);
+            waitForStep();
+        }
+
+        @Override
+        public void debugActies(Kaart kaart, HandelsPositie positie, List<Actie> acties) {
+            kaartDisplay.setKaart(kaart);
+            kaartDisplay.setHandel(null);
+            kaartDisplay.setActies(positie, acties);
             waitForStep();
         }
 

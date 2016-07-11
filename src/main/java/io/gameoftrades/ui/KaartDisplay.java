@@ -25,7 +25,13 @@ import io.gameoftrades.model.kaart.TerreinType;
 import io.gameoftrades.model.markt.Handel;
 import io.gameoftrades.model.markt.HandelType;
 import io.gameoftrades.model.markt.Handelsplan;
+import io.gameoftrades.model.markt.actie.Actie;
+import io.gameoftrades.model.markt.actie.BeweegActie;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
+import io.gameoftrades.model.markt.actie.KoopActie;
+import io.gameoftrades.model.markt.actie.NavigeerActie;
+import io.gameoftrades.model.markt.actie.StopActie;
+import io.gameoftrades.model.markt.actie.VerkoopActie;
 
 public class KaartDisplay extends JPanel implements PlanControl {
 
@@ -51,6 +57,8 @@ public class KaartDisplay extends JPanel implements PlanControl {
     private Map<Coordinaat, ?> open;
     private Map<Coordinaat, ?> closed;
     private Map<Handel, List<Handel>> handel;
+    private HandelsPositie actiePositie;
+    private List<Actie> acties;
 
     public KaartDisplay() {
         super(null);
@@ -78,6 +86,9 @@ public class KaartDisplay extends JPanel implements PlanControl {
         open = null;
         closed = null;
         handel = null;
+        acties = null;
+        actiePositie = null;
+        positie = null;
         repaint();
     }
 
@@ -156,6 +167,12 @@ public class KaartDisplay extends JPanel implements PlanControl {
         listeners.add(l);
     }
 
+    public void setActies(HandelsPositie actiePositie, List<Actie> acties) {
+        this.actiePositie = actiePositie;
+        this.acties = acties == null ? null : new ArrayList<>(acties);
+        this.repaint();
+    }
+
     @Override
     public void paint(Graphics gg) {
         Graphics2D g = (Graphics2D) gg;
@@ -164,6 +181,9 @@ public class KaartDisplay extends JPanel implements PlanControl {
         }
         if (steden != null) {
             tekenStedenTour(g);
+        }
+        if (actiePositie != null && acties != null) {
+            tekenActies(g, actiePositie, acties);
         }
         if (positie != null) {
             g.setColor(new Color(0.8f, 1.0f, 0.8f, 0.8f));
@@ -189,6 +209,39 @@ public class KaartDisplay extends JPanel implements PlanControl {
         }
     }
 
+    private void tekenActies(Graphics2D g,HandelsPositie pos, List<Actie> as) {
+        int lx = pos.getCoordinaat().getX() * tilesize + 7;
+        int ly = pos.getCoordinaat().getY() * tilesize + 7;
+        for (Actie a : as) {
+            if (a.isMogelijk(pos)) {
+                pos = a.voerUit(pos);
+                int nx = pos.getCoordinaat().getX() * tilesize + 7;
+                int ny = pos.getCoordinaat().getY() * tilesize + 7;
+                if (a instanceof BeweegActie) {
+                    g.setColor(TOUR_KLEUR);
+                    g.drawLine(lx, ly, nx, ny);
+                } else if (a instanceof NavigeerActie) {
+                    g.setColor(PAD_KLEUR);
+                    g.drawLine(lx, ly, nx, ny);
+                } else if (a instanceof KoopActie) {
+                    g.setColor(OVERLAY_KLEUR);
+                    g.fillOval(nx - 3, ny - 3, 7, 7);
+                } else if (a instanceof VerkoopActie) {
+                    g.setColor(OVERLAY_KLEUR);
+                    g.drawOval(nx - 3, ny - 3, 7, 7);
+                } else if (a instanceof StopActie) {
+                    g.setColor(OVERLAY_KLEUR);
+                    g.fillRect(nx - 3, ny - 3, 7, 7);
+                }
+                lx = nx;
+                ly = ny;
+            } else {
+                g.setColor(Color.RED);
+                g.fillRect(lx - 3, ly - 3, 7, 7);
+            }
+        }
+    }
+
     private void tekenHandel(Graphics2D g) {
         for (Map.Entry<Handel, List<Handel>> e : handel.entrySet()) {
             Coordinaat start = e.getKey().getStad().getCoordinaat();
@@ -209,6 +262,9 @@ public class KaartDisplay extends JPanel implements PlanControl {
     }
 
     private Map<Handel, List<Handel>> pair(List<Handel> handel) {
+        if (handel == null) {
+            return null;
+        }
         Map<Handel, List<Handel>> pairs = new HashMap<>();
         for (Handel h : handel) {
             if (HandelType.BIEDT.equals(h.getHandelType())) {

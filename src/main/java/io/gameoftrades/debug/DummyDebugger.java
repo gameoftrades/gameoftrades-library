@@ -9,6 +9,7 @@ import io.gameoftrades.model.kaart.Pad;
 import io.gameoftrades.model.kaart.Stad;
 import io.gameoftrades.model.markt.Handel;
 import io.gameoftrades.model.markt.Handelsplan;
+import io.gameoftrades.model.markt.actie.Actie;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
 
 /**
@@ -43,6 +44,10 @@ public class DummyDebugger implements Debugger {
 
     @Override
     public void debugHandel(Kaart kaart, List<Handel> handel) {
+    }
+
+    @Override
+    public void debugActies(Kaart kaart, HandelsPositie positie, List<Actie> acties) {
     }
 
     @Override
