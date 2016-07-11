@@ -10,6 +10,7 @@ import io.gameoftrades.model.kaart.Kaart;
 import io.gameoftrades.model.kaart.Pad;
 import io.gameoftrades.model.kaart.Richting;
 import io.gameoftrades.model.kaart.Stad;
+import io.gameoftrades.model.markt.Handel;
 import io.gameoftrades.model.markt.Handelsplan;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
 
@@ -92,6 +93,11 @@ public class AsciiArtDebugger implements Debugger {
 
     @Override
     public PlanControl speelPlanAf(Handelsplan plan, HandelsPositie initieel) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void debugHandel(Kaart kaart, List<Handel> handel) {
         throw new UnsupportedOperationException();
     }
 

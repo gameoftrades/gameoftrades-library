@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,8 @@ import io.gameoftrades.model.kaart.Pad;
 import io.gameoftrades.model.kaart.Richting;
 import io.gameoftrades.model.kaart.Stad;
 import io.gameoftrades.model.kaart.TerreinType;
+import io.gameoftrades.model.markt.Handel;
+import io.gameoftrades.model.markt.HandelType;
 import io.gameoftrades.model.markt.Handelsplan;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
 
@@ -47,6 +50,7 @@ public class KaartDisplay extends JPanel implements PlanControl {
     private List<HandelsPositieListener> listeners = new ArrayList<>();
     private Map<Coordinaat, ?> open;
     private Map<Coordinaat, ?> closed;
+    private Map<Handel, List<Handel>> handel;
 
     public KaartDisplay() {
         super(null);
@@ -73,7 +77,13 @@ public class KaartDisplay extends JPanel implements PlanControl {
         overlay = null;
         open = null;
         closed = null;
+        handel = null;
         repaint();
+    }
+
+    public void setHandel(List<Handel> handel) {
+        this.handel = pair(handel);
+        this.repaint();
     }
 
     public synchronized void setPad(Coordinaat start, Pad pad) {
@@ -171,9 +181,52 @@ public class KaartDisplay extends JPanel implements PlanControl {
         if (closed != null) {
             drawOpenClosed(g, closed, Color.RED);
         }
+        if (handel != null) {
+            tekenHandel(g);
+        }
         if ((pad != null) && (start != null)) {
             tekenPad(g);
         }
+    }
+
+    private void tekenHandel(Graphics2D g) {
+        for (Map.Entry<Handel, List<Handel>> e : handel.entrySet()) {
+            Coordinaat start = e.getKey().getStad().getCoordinaat();
+            for (Handel dst : e.getValue()) {
+                Coordinaat end = dst.getStad().getCoordinaat();
+                int x = start.getX() * tilesize + 7;
+                int y = start.getY() * tilesize + 7;
+                g.setColor(new Color(e.getKey().getStad().hashCode() & 0x00FFFFFF | 0x000000FF));
+                g.fillOval(x - 6, y - 3, 7, 7);
+                int x2 = end.getX() * tilesize + 7;
+                int y2 = end.getY() * tilesize + 7;
+                g.setColor(new Color(dst.getHandelswaar().hashCode() & 0x00FFFFFF | 0x00FF0000));
+                g.drawLine(x - 3, y, x2 + 9, y2);
+                g.setColor(new Color(dst.getStad().hashCode() & 0x00FFFFFF | 0x000000FF));
+                g.drawOval(x2 + 6, y2 - 3, 7, 7);
+            }
+        }
+    }
+
+    private Map<Handel, List<Handel>> pair(List<Handel> handel) {
+        Map<Handel, List<Handel>> pairs = new HashMap<>();
+        for (Handel h : handel) {
+            if (HandelType.BIEDT.equals(h.getHandelType())) {
+                if (!pairs.containsKey(h)) {
+                    pairs.put(h, new ArrayList<>());
+                } 
+            }
+        }
+        for (Handel h : handel) {
+            if (HandelType.VRAAGT.equals(h.getHandelType())) {
+                for (Handel a : pairs.keySet()) {
+                    if (h.getHandelswaar().equals(a.getHandelswaar())) {
+                        pairs.get(a).add(h);
+                    }
+                }
+            }
+        }
+        return pairs;
     }
 
     private void drawOpenClosed(Graphics2D g, Map<Coordinaat, ?> coords, Color c) {

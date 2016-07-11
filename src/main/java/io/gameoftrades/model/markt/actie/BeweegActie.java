@@ -60,7 +60,7 @@ public class BeweegActie implements Actie {
 
     @Override
     public boolean isMogelijk(HandelsPositie positie) {
-        return van.equals(positie.getStad()) && positie.getTotaalActie() + bewegingsPunten < positie.getMaxActie();
+        return van.equals(positie.getStad()) && positie.isActieBeschikbaar(bewegingsPunten);
     }
 
     @Override

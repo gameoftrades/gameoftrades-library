@@ -26,7 +26,7 @@ public class NavigeerActie implements Actie {
 
     @Override
     public boolean isMogelijk(HandelsPositie positie) {
-        return van.equals(positie.getCoordinaat());
+        return van.equals(positie.getCoordinaat()) && !positie.isKlaar();
     }
 
     @Override

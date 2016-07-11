@@ -32,7 +32,7 @@ public class KoopActie implements Actie {
     public boolean isMogelijk(HandelsPositie positie) {
         return positie.getStad().equals(handel.getStad()) &&
                 positie.getRuimte() > 0 && positie.getKapitaal() >= handel.getPrijs()
-                && positie.getTotaalActie() + 1 < positie.getMaxActie();
+                && positie.isActieBeschikbaar(1);
     }
 
     @Override

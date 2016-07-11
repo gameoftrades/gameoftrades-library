@@ -33,6 +33,7 @@ public final class HandelsPositie {
 
     private Wereld wereld;
     private int maxActie;
+    private boolean gestopt;
 
     private int totaalActie;
     private int totaalWinst;
@@ -98,7 +99,7 @@ public final class HandelsPositie {
             throw new IllegalArgumentException("Onvoldoende kapitaal.");
         }
         copy.ruimte = copy.ruimte - aantal;
-        copy.kapitaal = org.kapitaal- geld;
+        copy.kapitaal = org.kapitaal - geld;
         copy.totaalWinst = org.totaalWinst - geld;
         copy.totaalActie += 1;
         if (copy.voorraad.containsKey(hw)) {
@@ -117,7 +118,7 @@ public final class HandelsPositie {
      * @param geld de totale hoeveelheid geld die ontvangen wordt voor de handelswaar.
      * @return de nieuwe positie.
      */
-    public static HandelsPositie verkoop(HandelsPositie org, int aantal, Handelswaar hw, int geld) {
+    static HandelsPositie verkoop(HandelsPositie org, int aantal, Handelswaar hw, int geld) {
         HandelsPositie copy = new HandelsPositie(org);
         if (!org.voorraad.containsKey(hw)) {
             throw new IllegalArgumentException("Geen " + hw + " op voorraad.");
@@ -133,6 +134,15 @@ public final class HandelsPositie {
         if (copy.voorraad.get(hw) == 0) {
             copy.voorraad.remove(hw);
         }
+        return copy;
+    }
+
+    static HandelsPositie stop(HandelsPositie org) {
+        HandelsPositie copy = new HandelsPositie(org);
+        if (org.gestopt) {
+            throw new IllegalArgumentException("Alreeds gestopt!");
+        }
+        copy.gestopt = true;
         return copy;
     }
 
@@ -171,38 +181,86 @@ public final class HandelsPositie {
         this.totaalActie = pos.totaalActie;
         this.totaalWinst = pos.totaalWinst;
         this.maxActie = pos.maxActie;
+        this.gestopt = pos.gestopt;
     }
 
+    /**
+     * @return de huidige stad of null.
+     */
     public Stad getStad() {
         return stad;
     }
 
-    public int getKapitaal() {
-        return kapitaal;
-    }
-
-    public int getRuimte() {
-        return ruimte;
-    }
-
-    public Map<Handelswaar, Integer> getVoorraad() {
-        return Collections.unmodifiableMap(voorraad);
-    }
-
-    public int getTotaalActie() {
-        return totaalActie;
-    }
-
-    public int getTotaalWinst() {
-        return totaalWinst;
-    }
-
+    /**
+     * @return het huidige coordinaat van de handelaar.
+     */
     public Coordinaat getCoordinaat() {
         return coordinaat;
     }
 
+    /**
+     * @return totaal beschikbaar kapitaal.
+     */
+    public int getKapitaal() {
+        return kapitaal;
+    }
+
+    /**
+     * @return totaal beschikbare ruimte.
+     */
+    public int getRuimte() {
+        return ruimte;
+    }
+
+    /**
+     * @return de voorraad.
+     */
+    public Map<Handelswaar, Integer> getVoorraad() {
+        return Collections.unmodifiableMap(voorraad);
+    }
+
+    /**
+     * @return het totaal verbruikte actie punten.
+     */
+    public int getTotaalActie() {
+        return totaalActie;
+    }
+
+    /**
+     * @return de gemaakte winst. 
+     */
+    public int getTotaalWinst() {
+        return totaalWinst;
+    }
+
+    /**
+     * @return het maximaal te gebruiken acties.
+     */
     public int getMaxActie() {
         return maxActie;
+    }
+
+    /**
+     * @return true wanneer het handelen gestopt is met een StopActie.
+     */
+    public boolean isGestopt() {
+        return gestopt;
+    }
+
+    /**
+     * Geeft true terug wanneer er gestopt is of dat er geen actie punten meer zijn.
+     * @return true wanneer het handelen klaar is.
+     */
+    public boolean isKlaar() {
+        return gestopt || getTotaalActie() >= getMaxActie();
+    }
+
+    /**
+     * @param actie het aantal actie punten dat verbruikt moet gaan worden.
+     * @return true wanneer er nog voldoende punten beschikbaar zijn (en er nog niet is gestopt).
+     */
+    public boolean isActieBeschikbaar(int actie) {
+        return !gestopt && getTotaalActie() + actie <= getMaxActie();
     }
 
 }

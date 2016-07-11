@@ -6,9 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import io.gameoftrades.model.markt.actie.HandelsPositie;
-import io.gameoftrades.model.markt.actie.KoopActie;
-
 public class KoopActieTest extends AbstractActieTest {
 
     @Test
@@ -23,6 +20,11 @@ public class KoopActieTest extends AbstractActieTest {
         assertFalse(new KoopActie(h1).isMogelijk(new HandelsPositie(wereld, stad1, 0, 10, 8)));
         assertFalse(new KoopActie(h1).isMogelijk(new HandelsPositie(wereld, stad1, 10, 0, 8)));
         assertFalse(new KoopActie(h1).isMogelijk(new HandelsPositie(wereld, stad1, 10, 10, 0)));
+    }
+
+    @Test
+    public void kopenKostEenActie() {
+        assertTrue(new KoopActie(h1).isMogelijk(new HandelsPositie(wereld, stad1, 10, 10, 1)));
     }
 
     @Test

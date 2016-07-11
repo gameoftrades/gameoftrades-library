@@ -1,6 +1,7 @@
 package io.gameoftrades.model.markt.actie;
 
 import io.gameoftrades.model.markt.Handel;
+import io.gameoftrades.model.markt.HandelType;
 import io.gameoftrades.util.Assert;
 
 /**
@@ -12,6 +13,7 @@ public class VerkoopActie implements Actie {
 
     public VerkoopActie(Handel handel) {
         Assert.notNull(handel);
+        Assert.equals(HandelType.VRAAGT, handel.getHandelType());
         this.handel = handel;
     }
 
@@ -30,7 +32,7 @@ public class VerkoopActie implements Actie {
         if (!positie.getStad().equals(handel.getStad())) {
             return false;
         }
-        if (positie.getTotaalActie() + 1 >= positie.getMaxActie()) {
+        if (!positie.isActieBeschikbaar(1)) {
             return false;
         }
         Integer value = positie.getVoorraad().get(handel.getHandelswaar());

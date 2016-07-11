@@ -7,6 +7,7 @@ import io.gameoftrades.model.kaart.Coordinaat;
 import io.gameoftrades.model.kaart.Kaart;
 import io.gameoftrades.model.kaart.Pad;
 import io.gameoftrades.model.kaart.Stad;
+import io.gameoftrades.model.markt.Handel;
 import io.gameoftrades.model.markt.Handelsplan;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
 
@@ -79,6 +80,13 @@ public interface Debugger {
      * @param steden de steden.
      */
     void debugSteden(Kaart kaart, List<Stad> steden);
+
+    /**
+     * laat de handel zien op de kaart.
+     * @param kaart de kaart,
+     * @param handel de handel.
+     */
+    void debugHandel(Kaart kaart, List<Handel> handel);
 
     /**
      * Speelt een volledig plan af op de kaart.
