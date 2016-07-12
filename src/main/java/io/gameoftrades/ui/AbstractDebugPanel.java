@@ -99,6 +99,7 @@ public abstract class AbstractDebugPanel extends JPanel {
     private KaartDisplay kaartDisplay;
     private Object stepLock = new Object();
     private Thread runner;
+    private Thread watcher;
     private GuiDebugger debugger;
 
     public AbstractDebugPanel(KaartDisplay kaartDisplay) {
@@ -151,6 +152,40 @@ public abstract class AbstractDebugPanel extends JPanel {
             startButton.setEnabled(false);
             runner.start();
             stopButton.setEnabled(true);
+            if (watcher == null) {
+                startWatcher();
+            }
+        }
+    }
+
+    /**
+     * the watcher presses the stop button when the runner has ended.
+     */
+    private void startWatcher() {
+        if (watcher == null) {
+            watcher = new Thread(() -> {
+                while (true) {
+                    if ((runner != null)) {
+                        if (!runner.isAlive()) {
+                            SwingUtilities.invokeLater(() -> {
+                                if (stopButton.isEnabled()) {
+                                    stopButton.doClick();
+                                }
+                            });
+                            return;
+                        }
+                    } else {
+                        return;
+                    }
+                    try {
+                        Thread.sleep(100L);
+                    } catch (Exception e) {
+                        return;
+                    }
+                }
+            });
+            watcher.setDaemon(true);
+            watcher.start();
         }
     }
 
@@ -162,7 +197,11 @@ public abstract class AbstractDebugPanel extends JPanel {
             if (runner.isAlive()) {
                 runner.stop();
             }
+            if (watcher.isAlive()) {
+                watcher.interrupt();
+            }
             runner = null;
+            watcher = null;
         }
         startButton.setEnabled(true);
     }
