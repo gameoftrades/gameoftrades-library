@@ -33,6 +33,9 @@ import io.gameoftrades.model.markt.actie.NavigeerActie;
 import io.gameoftrades.model.markt.actie.StopActie;
 import io.gameoftrades.model.markt.actie.VerkoopActie;
 
+/**
+ * Tekent de kaart en debug resultaten.  
+ */
 public class KaartDisplay extends JPanel implements PlanControl {
 
     private static final Color PAD_KLEUR = new Color(220, 255, 220);

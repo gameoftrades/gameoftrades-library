@@ -10,6 +10,9 @@ import javax.swing.JComboBox;
 import io.gameoftrades.model.Wereld;
 import io.gameoftrades.model.algoritme.StedenTourAlgoritme;
 
+/**
+ * Debugger GUI voor het StedenTour algoritme. 
+ */
 public class TspDebugPanel extends AbstractDebugPanel {
 
     private DefaultComboBoxModel<StedenTourAlgoritme> model = new DefaultComboBoxModel<>();

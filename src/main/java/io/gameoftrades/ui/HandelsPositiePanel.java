@@ -10,6 +10,9 @@ import javax.swing.JPanel;
 
 import io.gameoftrades.model.markt.actie.HandelsPositie;
 
+/**
+ * Toont de huidige HandelsPositie.
+ */
 public class HandelsPositiePanel extends JPanel implements HandelsPositieListener {
 
     public static class LabelValue extends JPanel {

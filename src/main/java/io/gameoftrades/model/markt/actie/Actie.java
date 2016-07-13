@@ -1,5 +1,8 @@
 package io.gameoftrades.model.markt.actie;
 
+/**
+ * Een handels actie van de handelaar, zoals kopen, verkopen en navigeren. 
+ */
 public interface Actie {
 
     /**

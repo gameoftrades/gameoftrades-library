@@ -22,6 +22,11 @@ import io.gameoftrades.model.markt.Handelsplan;
 import io.gameoftrades.model.markt.actie.Actie;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
 
+/**
+ * Abstracte klasse voor het debuggen van algoritmen. 
+ * Koppelt het algoritme aan het KaartPanel via de Debugger interface en 
+ * maakt het stappen door het algoritme mogelijk. 
+ */
 public abstract class AbstractDebugPanel extends JPanel {
 
     public class GuiDebugger implements Debugger {

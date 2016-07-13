@@ -12,6 +12,9 @@ import io.gameoftrades.model.algoritme.SnelstePadAlgoritme;
 import io.gameoftrades.model.kaart.Coordinaat;
 import io.gameoftrades.model.kaart.Stad;
 
+/**
+ * Debugger GUI voor het SnelstePad algoritme.
+ */
 public class SnelstePadDebugPanel extends AbstractDebugPanel {
 
     private DefaultComboBoxModel<SnelstePadAlgoritme> model = new DefaultComboBoxModel<>();

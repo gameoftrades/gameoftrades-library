@@ -9,6 +9,7 @@ public interface WereldLader {
 
     /**
      * laad de wereld van de gegeven classpath resource.
+     * Wanneer de gegeven resource niet voldoet aan het formaat moet een <b>java.lang.IllegalArgumentException</b> gegooit worden. 
      * @param resource de resource.
      * @return de wereld.
      */

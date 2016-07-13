@@ -14,8 +14,10 @@ import io.gameoftrades.model.algoritme.HandelsplanAlgoritme;
 import io.gameoftrades.model.kaart.Stad;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
 
+/**
+ * Debugger GUI voor het Handelsplan algoritme. 
+ */
 public class PlanDebugPanel extends AbstractDebugPanel {
-
 
     private DefaultComboBoxModel<HandelsplanAlgoritme> model = new DefaultComboBoxModel<>();
     private DefaultComboBoxModel<Stad> startStadModel = new DefaultComboBoxModel<>();

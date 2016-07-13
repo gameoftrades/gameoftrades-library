@@ -9,7 +9,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+/**
+ * Utility panel voor het tonen van een label en component. 
+ */
 public class LabelPanel extends JPanel {
+
     public LabelPanel(String str, JComponent comp) {
         super(new BorderLayout());
         JLabel label = new JLabel(str);
@@ -19,4 +23,5 @@ public class LabelPanel extends JPanel {
         this.add(label, BorderLayout.WEST);
         this.add(comp, BorderLayout.CENTER);
     }
+
 }

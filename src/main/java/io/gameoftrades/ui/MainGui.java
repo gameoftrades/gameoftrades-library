@@ -23,19 +23,11 @@ import io.gameoftrades.util.HandelaarScanner;
  */
 public class MainGui {
 
-    public static void toon() {
-        NavigableMap<String, Handelaar> found = HandelaarScanner.vindImplementaties();
-        if (!found.isEmpty()) {
-            toon(found.firstEntry().getValue());
-        } else {
-            throw new RuntimeException("Geen Handelaar implementaties gevonden.");
-        }
-    }
-
-    public static void toon(Handelaar handelaar) {
-        toon(handelaar, "/maps/game-of-thrones.txt");
-    }
-
+    /**
+     * scant het classpath voor Handelaren en toont de GUI met het gegeven handelaars id en kaart resource.
+     * @param kaart de kaart resource.
+     * @param id het handelaars (team) id.
+     */
     public static void toon(String kaart, String id) {
         NavigableMap<String, Handelaar> found = HandelaarScanner.vindImplementaties();
         Handelaar handelaar = found.get(id);
@@ -46,6 +38,11 @@ public class MainGui {
         }
     }
 
+    /**
+     * Toont de GUI met de gegeven handelaar en kaart.
+     * @param handelaar de handelaar.
+     * @param kaart de kaart.
+     */
     public static void toon(Handelaar handelaar, String kaart) {
         KaartDisplay display = new KaartDisplay();
         Wereld wereld = handelaar.nieuweWereldLader().laad(kaart);

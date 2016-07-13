@@ -2,6 +2,9 @@ package io.gameoftrades.util;
 
 import java.util.Objects;
 
+/**
+ * Utilily klasse om te controleren dat er geen ongeldige parameters een domein object in gaan. 
+ */
 public final class Assert {
 
     public static void notNull(Object value) {

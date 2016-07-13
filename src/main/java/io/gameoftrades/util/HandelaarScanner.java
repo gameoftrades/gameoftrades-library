@@ -6,6 +6,9 @@ import java.util.TreeMap;
 
 import io.gameoftrades.model.Handelaar;
 
+/**
+ * Scant de <b>io.gameoftrades.studentXX</b> packages op zoek naar <b>HandelaarImpl</b> klassen. 
+ */
 public final class HandelaarScanner {
 
     public static NavigableMap<String, Handelaar> vindImplementaties() {
