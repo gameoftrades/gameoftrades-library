@@ -61,7 +61,7 @@ public interface Debugger {
      * toont de eerste 2 karakters van de waarden van de map op de coordinaten van zijn key.  
      * Mogelijk handig bij opdracht 1. 
      * @param kaart de kaart.
-     * @param map een map van coordinaat -> value paren.
+     * @param map een map van coordinaat, value paren.
      */
     void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> map);
 
@@ -69,8 +69,8 @@ public interface Debugger {
      * toont de eerste 2 karakters van de waarden van de map op de coordinaten van zijn key.  
      * Mogelijk handig bij opdracht 1. 
      * @param kaart de kaart.
-     * @param open een map van coordinaat -> value paren (in groen).
-     * @param closed een map van coordinaat -> value paren (in rood).
+     * @param open een map van coordinaat, value paren (in groen).
+     * @param closed een map van coordinaat, value paren (in rood).
      */
     void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open, Map<Coordinaat, ?> closed);
 
