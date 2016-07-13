@@ -266,7 +266,7 @@ public final class HandelsPositie {
     
     @Override
     public String toString() {
-        return "HandelsPositie("+getCoordinaat()+","+getTotaalActie()+","+getTotaalWinst()+")";
+        return "HandelsPositie(" + getCoordinaat() + ",$" + kapitaal + ",R:" + ruimte + ",A:" + getTotaalActie() + ",W:" + getTotaalWinst() + ")";
     }
 
 }

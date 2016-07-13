@@ -16,7 +16,7 @@ import io.gameoftrades.model.markt.actie.Actie;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
 
 /**
- * Rendert ascii art representaties van de kaart en paden. 
+ * Rendert ascii art representaties van de kaart en paden.
  */
 public class AsciiArtDebugger implements Debugger {
 
@@ -94,17 +94,46 @@ public class AsciiArtDebugger implements Debugger {
 
     @Override
     public PlanControl speelPlanAf(Handelsplan plan, HandelsPositie initieel) {
-        throw new UnsupportedOperationException();
+        return new PlanControl() {
+            private HandelsPositie positie = initieel;
+            private int stap = 0;
+            @Override
+            public void nextStep() {
+                Actie a = plan.getActies().get(stap);
+                if (a.isMogelijk(positie)) {
+                    HandelsPositie volgende = a.voerUit(positie);
+                    System.out.println(positie + " -> " + a + " -> " + volgende);
+                    positie = volgende;
+                } else {
+                    System.out.println(positie + " -> " + a + " -> Actie NIET mogelijk!");
+                }
+                stap++;
+            }
+            
+            @Override
+            public boolean hasNextStep() {
+                return stap < plan.getActies().size();
+            }
+        };
     }
 
     @Override
     public void debugHandel(Kaart kaart, List<Handel> handel) {
-        throw new UnsupportedOperationException();
+        System.out.println(String.valueOf(handel));
     }
 
     @Override
     public void debugActies(Kaart kaart, HandelsPositie positie, List<Actie> acties) {
-        throw new UnsupportedOperationException();
+        for (Actie a : acties) {
+            if (a.isMogelijk(positie)) {
+                HandelsPositie volgendePositie = a.voerUit(positie);
+                System.out.println(positie + " -> " + a + " -> " + volgendePositie);
+                positie = volgendePositie;
+            } else {
+                System.out.println(positie + " -> " + a + " -> Actie NIET mogelijk!");
+                return;
+            }
+        }
     }
 
     /**

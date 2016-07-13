@@ -1,10 +1,14 @@
 package io.gameoftrades.debug;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import io.gameoftrades.debug.Debugger.PlanControl;
+import io.gameoftrades.model.Wereld;
 import io.gameoftrades.model.kaart.Coordinaat;
 import io.gameoftrades.model.kaart.Kaart;
 import io.gameoftrades.model.kaart.Pad;
@@ -12,6 +16,15 @@ import io.gameoftrades.model.kaart.Richting;
 import io.gameoftrades.model.kaart.Stad;
 import io.gameoftrades.model.kaart.Terrein;
 import io.gameoftrades.model.kaart.TerreinType;
+import io.gameoftrades.model.markt.Handel;
+import io.gameoftrades.model.markt.HandelType;
+import io.gameoftrades.model.markt.Handelsplan;
+import io.gameoftrades.model.markt.Handelswaar;
+import io.gameoftrades.model.markt.Markt;
+import io.gameoftrades.model.markt.actie.Actie;
+import io.gameoftrades.model.markt.actie.HandelsPositie;
+import io.gameoftrades.model.markt.actie.KoopActie;
+import io.gameoftrades.model.markt.actie.NavigeerActie;
 
 public class AsciiArtDebuggerTest {
 
@@ -81,6 +94,48 @@ public class AsciiArtDebuggerTest {
             }
 
         });
+    }
+
+    @Test
+    public void debugHandel() {
+        List<Handel> handel = new ArrayList<>();
+        handel.add(new Handel(new Stad(Coordinaat.op(1, 1), "Stad"), HandelType.BIEDT, new Handelswaar("x"), 42));
+        debug.debugHandel(kaart, handel);
+    }
+
+    @Test
+    public void debugPlanActies() {
+        List<Handel> handel = new ArrayList<>();
+        Stad stad = new Stad(Coordinaat.op(1, 1), "Stad");
+        handel.add(new Handel(stad, HandelType.BIEDT, new Handelswaar("x"), 42));
+        Wereld w = new Wereld(kaart, Collections.singletonList(stad), new Markt(handel));
+        HandelsPositie positie = new HandelsPositie(w, stad, 100, 1, 100);
+
+        List<Actie> acties = new ArrayList<>();
+        acties.add(new KoopActie(handel.get(0)));
+        acties.add(new NavigeerActie(stad.getCoordinaat(), Richting.ZUID));
+        acties.add(new KoopActie(handel.get(0))); // Can't!
+
+        debug.debugActies(kaart, positie, acties);
+    }
+
+    @Test
+    public void zouPlanMoetenAfspelen() {
+        List<Handel> handel = new ArrayList<>();
+        Stad stad = new Stad(Coordinaat.op(1, 1), "Stad");
+        handel.add(new Handel(stad, HandelType.BIEDT, new Handelswaar("x"), 42));
+        Wereld w = new Wereld(kaart, Collections.singletonList(stad), new Markt(handel));
+        HandelsPositie positie = new HandelsPositie(w, stad, 100, 1, 100);
+
+        List<Actie> acties = new ArrayList<>();
+        acties.add(new KoopActie(handel.get(0)));
+        acties.add(new NavigeerActie(stad.getCoordinaat(), Richting.ZUID));
+        acties.add(new KoopActie(handel.get(0))); // Can't!
+
+        PlanControl ctrl = debug.speelPlanAf(new Handelsplan(acties), positie);
+        while (ctrl.hasNextStep()) {
+            ctrl.nextStep();
+        }
     }
 
 }

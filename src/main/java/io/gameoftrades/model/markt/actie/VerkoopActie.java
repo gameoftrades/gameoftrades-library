@@ -29,7 +29,7 @@ public class VerkoopActie implements Actie {
 
     @Override
     public boolean isMogelijk(HandelsPositie positie) {
-        if (!positie.getStad().equals(handel.getStad())) {
+        if (!handel.getStad().equals(positie.getStad())) {
             return false;
         }
         if (!positie.isActieBeschikbaar(1)) {
