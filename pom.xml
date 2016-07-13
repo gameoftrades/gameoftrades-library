@@ -3,7 +3,7 @@
 
     <groupId>io.gameoftrades</groupId>
     <artifactId>gameoftrades-library</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
     <name>Game of Trades Library</name>
     <description>Library for Game of Trades</description>
