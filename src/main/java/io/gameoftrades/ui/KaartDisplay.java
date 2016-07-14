@@ -45,6 +45,7 @@ public class KaartDisplay extends JPanel implements PlanControl {
     private int tilesize = 16;
 
     private BufferedImage tiles;
+    private BufferedImage[][] tileCache;
 
     private Kaart kaart;
     private Coordinaat start;
@@ -67,6 +68,7 @@ public class KaartDisplay extends JPanel implements PlanControl {
         super(null);
         try {
             tiles = ImageIO.read(KaartDisplay.class.getResourceAsStream("/game-of-trades.png"));
+            tileCache = new BufferedImage[1 + (tiles.getHeight() / tilesize)][1 + (tiles.getWidth() / (tilesize + 1))];
         } catch (IOException ex) {
             throw new RuntimeException("Kon tile resource niet laden", ex);
         }
@@ -443,7 +445,17 @@ public class KaartDisplay extends JPanel implements PlanControl {
     }
 
     private BufferedImage getTile(int x, int y) {
-        return tiles.getSubimage(x * (tilesize + 1), y * tilesize, tilesize, tilesize);
+        if (tileCache[y][x] == null) {
+            BufferedImage tmp = new BufferedImage(tilesize, tilesize, tiles.getType());
+            Graphics g = tmp.getGraphics();
+            try {
+                g.drawImage(tiles, -x * (tilesize + 1), -y * tilesize, null);
+            } finally {
+                g.dispose();
+            }
+            tileCache[y][x] = tmp;
+        }
+        return tileCache[y][x];
     }
 
 
