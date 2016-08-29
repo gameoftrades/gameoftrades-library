@@ -15,7 +15,7 @@ public final class Kaart {
         terrein = new Terrein[hoogte][breedte];
     }
 
-    void setTerrein(Coordinaat c, Terrein t) {
+    public void setTerrein(Coordinaat c, Terrein t) {
         if (terrein[c.getY()][c.getX()] == null) {
             terrein[c.getY()][c.getX()] = t;
         }
