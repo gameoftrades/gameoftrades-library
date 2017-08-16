@@ -32,5 +32,19 @@ public class NavigeerActieTest extends AbstractActieTest {
         HandelsPositie positie = new HandelsPositie(wereld, stad1, 0, 0, 10);
         assertFalse(new NavigeerActie(Coordinaat.op(1, 0), Richting.OOST).isMogelijk(positie));
     }
+    
+    @Test
+    public void zouBijNavigatieNaarStadStadMoetenToekennen() {
+        HandelsPositie positie = new HandelsPositie(wereld, stad1, 0, 0,10);
+        NavigeerActie a = new NavigeerActie(Coordinaat.op(0, 0), Richting.OOST);
+        NavigeerActie b = new NavigeerActie(Coordinaat.op(1, 0), Richting.WEST);
+
+        positie = a.voerUit(positie);
+        assertNull(positie.getStad());
+        assertEquals(0, positie.getBezochteSteden().size());
+        positie = b.voerUit(positie);
+        assertEquals(stad1, positie.getStad());
+        assertEquals(1, positie.getBezochteSteden().size());
+    }
 
 }

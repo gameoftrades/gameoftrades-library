@@ -7,6 +7,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
 import io.gameoftrades.model.markt.actie.HandelsPositie;
 
@@ -20,8 +21,8 @@ public class HandelsPositiePanel extends JPanel implements HandelsPositieListene
         public LabelValue(String label) {
             super(new BorderLayout());
             JLabel lbl = new JLabel(label);
-            lbl.setMinimumSize(new Dimension(120, 20));
-            lbl.setPreferredSize(new Dimension(120, 20));
+            lbl.setMinimumSize(new Dimension(160, 20));
+            lbl.setPreferredSize(new Dimension(160, 20));
             this.add(lbl, BorderLayout.WEST);
             value = new JLabel();
             this.add(value, BorderLayout.CENTER);
@@ -39,17 +40,25 @@ public class HandelsPositiePanel extends JPanel implements HandelsPositieListene
     private LabelValue stad = new LabelValue("Stad:");
     private LabelValue voorraad = new LabelValue("Voorraad:");
 
+    private LabelValue totaalSteden = new LabelValue("Totaal Steden:");
+    private LabelValue uniekeGoederen = new LabelValue("Unieke Goederen:");
+    private LabelValue totaalRuimte = new LabelValue("Totaal Ruimte:");
+
     public HandelsPositiePanel() {
         super();
         setBorder(BorderFactory.createTitledBorder("HandelsPositie"));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setPreferredSize(new Dimension(420, 160));
+        setPreferredSize(new Dimension(420, 240));
         add(maxActie);
         add(kapitaal);
         add(stad);
         add(coordinaat);
         add(ruimte);
         add(voorraad);
+        add(new JLabel(" "));
+        add(totaalSteden);
+        add(uniekeGoederen);
+        add(totaalRuimte);
     }
 
     public void setHandelsPositie(HandelsPositie pos) {
@@ -59,6 +68,9 @@ public class HandelsPositiePanel extends JPanel implements HandelsPositieListene
         ruimte.setValue(String.valueOf(pos.getRuimte()));
         stad.setValue(pos.getStad() != null ? String.valueOf(pos.getStad()) : "--");
         voorraad.setValue(String.valueOf(pos.getVoorraad()));
+        totaalSteden.setValue(String.valueOf(pos.getBezochteSteden().size()));
+        uniekeGoederen.setValue(String.valueOf(pos.getUniekeGoederen()));
+        totaalRuimte.setValue(String.valueOf(pos.getTotaalGebruikteRuimte()));
     }
 
 }

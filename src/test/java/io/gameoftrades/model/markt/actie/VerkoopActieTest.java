@@ -16,7 +16,7 @@ public class VerkoopActieTest extends AbstractActieTest {
 
         VerkoopActie verkoopActie = new VerkoopActie(h4);
         assertTrue(verkoopActie.isMogelijk(positie));
-        
+
         HandelsPositie result = verkoopActie.voerUit(positie);
         assertEquals(10, result.getRuimte());
         assertEquals(40, result.getKapitaal());
@@ -25,6 +25,7 @@ public class VerkoopActieTest extends AbstractActieTest {
         assertEquals(4, result.getTotaalActie());
         assertFalse(result.isGestopt());
         assertTrue(result.isKlaar());
+        assertEquals("[stenen]", result.getUniekeGoederen().toString());
     }
 
 }

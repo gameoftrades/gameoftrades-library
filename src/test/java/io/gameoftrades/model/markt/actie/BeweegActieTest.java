@@ -43,6 +43,8 @@ public class BeweegActieTest extends AbstractActieTest {
         
         assertEquals(stad2, result.getStad());
         assertEquals(2, result.getTotaalActie());
+        assertEquals(1, result.getBezochteSteden().size());
+        assertEquals(stad2, result.getBezochteSteden().get(0));
     }
 
     @Test

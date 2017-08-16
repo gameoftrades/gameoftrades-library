@@ -1,8 +1,12 @@
 package io.gameoftrades.model.markt.actie;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import io.gameoftrades.model.Wereld;
 import io.gameoftrades.model.kaart.Coordinaat;
@@ -37,6 +41,10 @@ public final class HandelsPositie {
 
     private int totaalActie;
     private int totaalWinst;
+    
+    private Set<Handelswaar> uniekeGoederen;
+    private List<Stad> bezochteSteden;
+    private int totaalGebruikteRuimte;
 
     /**
      * maakt een nieuwe handels positie na het bewegen van een stad naar een andere stad.
@@ -54,6 +62,7 @@ public final class HandelsPositie {
             throw new IllegalArgumentException("De huidige locatie is " + org.stad + " en niet " + van);
         }
         copy.stad = naar;
+        copy.bezochteSteden.add(naar);
         copy.totaalActie += bw;
         copy.coordinaat = naar.getCoordinaat();
         return copy;
@@ -78,6 +87,7 @@ public final class HandelsPositie {
         for (Stad stad : org.wereld.getSteden()) {
             if (stad.getCoordinaat().equals(copy.coordinaat)) {
                 copy.stad = stad;
+                copy.bezochteSteden.add(stad);
             }
         }
         return copy;
@@ -102,6 +112,7 @@ public final class HandelsPositie {
         copy.ruimte = copy.ruimte - aantal;
         copy.kapitaal = org.kapitaal - geld;
         copy.totaalWinst = org.totaalWinst - geld;
+        copy.totaalGebruikteRuimte = copy.totaalGebruikteRuimte + aantal;
         copy.totaalActie += 1;
         if (copy.voorraad.containsKey(hw)) {
             copy.voorraad.put(hw, copy.voorraad.get(hw) + aantal);
@@ -132,6 +143,7 @@ public final class HandelsPositie {
         copy.totaalWinst = org.totaalWinst + geld;
         copy.totaalActie += 1;
         copy.voorraad.put(hw, copy.voorraad.get(hw) - aantal);
+        copy.uniekeGoederen.add(hw);
         if (copy.voorraad.get(hw) == 0) {
             copy.voorraad.remove(hw);
         }
@@ -165,6 +177,9 @@ public final class HandelsPositie {
         this.kapitaal = kapitaal;
         this.ruimte = ruimte;
         this.voorraad = new TreeMap<>();
+        this.uniekeGoederen = new TreeSet<>();
+        this.bezochteSteden = new ArrayList<>();
+        this.totaalGebruikteRuimte = 0;
     }
 
     /**
@@ -183,6 +198,9 @@ public final class HandelsPositie {
         this.totaalWinst = pos.totaalWinst;
         this.maxActie = pos.maxActie;
         this.gestopt = pos.gestopt;
+        this.uniekeGoederen = new TreeSet<>(pos.uniekeGoederen);
+        this.bezochteSteden = new ArrayList<>(pos.bezochteSteden);
+        this.totaalGebruikteRuimte = pos.totaalGebruikteRuimte;
     }
 
     /**
@@ -239,6 +257,27 @@ public final class HandelsPositie {
      */
     public int getMaxActie() {
         return maxActie;
+    }
+    
+    /**
+     * @return de lijst van bezochte steden.
+     */
+    public List<Stad> getBezochteSteden() {
+        return Collections.unmodifiableList(bezochteSteden);
+    }
+    
+    /**
+     * @return totale hoeveelheid gebruikte ruimte over het spel heen.
+     */
+    public int getTotaalGebruikteRuimte() {
+        return totaalGebruikteRuimte;
+    }
+    
+    /**
+     * @return alle unieke goederen waarin gedurende het spel in gehandeld is.
+     */
+    public Set<Handelswaar> getUniekeGoederen() {
+        return Collections.unmodifiableSet(uniekeGoederen);
     }
 
     /**

@@ -35,6 +35,7 @@ public class KoopActieTest extends AbstractActieTest {
         assertEquals(1, result.getKapitaal());
         assertEquals(5, result.getRuimte());
         assertEquals("{schapen=5}", String.valueOf(result.getVoorraad()));
+        assertEquals(5, result.getTotaalGebruikteRuimte());
     }
 
 }
