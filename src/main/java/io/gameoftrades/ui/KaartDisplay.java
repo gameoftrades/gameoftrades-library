@@ -2,6 +2,7 @@ package io.gameoftrades.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -41,8 +42,15 @@ public class KaartDisplay extends JPanel implements PlanControl {
     private static final Color PAD_KLEUR = new Color(220, 255, 220);
     private static final Color TOUR_KLEUR = new Color(40, 80, 255);
     private static final Color OVERLAY_KLEUR = new Color(240, 255, 240);
+    private static final Color OPEN_COLOR = new Color(64, 255, 64);
+    private static final Color CLOSED_COLOR = new Color(255, 64, 64);
+    private static final Color FOG = new Color(96, 96, 96, 128);
 
-    private int tilesize = 16;
+    private int tilesize;
+    private int tilespacing;
+    private int tilehalfwidth;
+    private int fontSize;
+    private Font font;
 
     private BufferedImage tiles;
     private BufferedImage[][] tileCache;
@@ -65,9 +73,19 @@ public class KaartDisplay extends JPanel implements PlanControl {
     private List<Actie> acties;
 
     public KaartDisplay() {
+        this(TileSet.T16);
+
+    }
+
+    public KaartDisplay(TileSet tileSet) {
         super(null);
         try {
-            tiles = ImageIO.read(KaartDisplay.class.getResourceAsStream("/game-of-trades.png"));
+            this.tilesize = tileSet.getTileSize();
+            this.tilespacing = tileSet.getTileSpacing();
+            this.tilehalfwidth = (tileSet.getTileSize() / 2) - 1;
+            this.fontSize = tileSet.getFontSize();
+            this.font = this.getFont().deriveFont((float) fontSize);
+            tiles = ImageIO.read(KaartDisplay.class.getResourceAsStream(tileSet.getResource()));
             tileCache = new BufferedImage[1 + (tiles.getHeight() / tilesize)][1 + (tiles.getWidth() / (tilesize + 1))];
         } catch (IOException ex) {
             throw new RuntimeException("Kon tile resource niet laden", ex);
@@ -201,10 +219,10 @@ public class KaartDisplay extends JPanel implements PlanControl {
             drawOverlay(g);
         }
         if (open != null) {
-            drawOpenClosed(g, open, Color.GREEN);
+            drawOpenClosed(g, open, OPEN_COLOR);
         }
         if (closed != null) {
-            drawOpenClosed(g, closed, Color.RED);
+            drawOpenClosed(g, closed, CLOSED_COLOR);
         }
         if (handel != null) {
             tekenHandel(g);
@@ -214,14 +232,14 @@ public class KaartDisplay extends JPanel implements PlanControl {
         }
     }
 
-    private void tekenActies(Graphics2D g,HandelsPositie pos, List<Actie> as) {
-        int lx = pos.getCoordinaat().getX() * tilesize + 7;
-        int ly = pos.getCoordinaat().getY() * tilesize + 7;
+    private void tekenActies(Graphics2D g, HandelsPositie pos, List<Actie> as) {
+        int lx = pos.getCoordinaat().getX() * tilesize + tilehalfwidth;
+        int ly = pos.getCoordinaat().getY() * tilesize + tilehalfwidth;
         for (Actie a : as) {
             if (a.isMogelijk(pos)) {
                 pos = a.voerUit(pos);
-                int nx = pos.getCoordinaat().getX() * tilesize + 7;
-                int ny = pos.getCoordinaat().getY() * tilesize + 7;
+                int nx = pos.getCoordinaat().getX() * tilesize + tilehalfwidth;
+                int ny = pos.getCoordinaat().getY() * tilesize + tilehalfwidth;
                 if (a instanceof BeweegActie) {
                     g.setColor(TOUR_KLEUR);
                     g.drawLine(lx, ly, nx, ny);
@@ -230,19 +248,19 @@ public class KaartDisplay extends JPanel implements PlanControl {
                     g.drawLine(lx, ly, nx, ny);
                 } else if (a instanceof KoopActie) {
                     g.setColor(OVERLAY_KLEUR);
-                    g.fillOval(nx - 3, ny - 3, 7, 7);
+                    g.fillOval(nx - tilehalfwidth / 2, ny - tilehalfwidth / 2, tilehalfwidth, tilehalfwidth);
                 } else if (a instanceof VerkoopActie) {
                     g.setColor(OVERLAY_KLEUR);
-                    g.drawOval(nx - 3, ny - 3, 7, 7);
+                    g.drawOval(nx - tilehalfwidth / 2, ny - tilehalfwidth / 2, tilehalfwidth, tilehalfwidth);
                 } else if (a instanceof StopActie) {
                     g.setColor(OVERLAY_KLEUR);
-                    g.fillRect(nx - 3, ny - 3, 7, 7);
+                    g.fillRect(nx - tilehalfwidth / 2, ny - tilehalfwidth / 2, tilehalfwidth, tilehalfwidth);
                 }
                 lx = nx;
                 ly = ny;
             } else {
                 g.setColor(Color.RED);
-                g.fillRect(lx - 3, ly - 3, 7, 7);
+                g.fillRect(lx - tilehalfwidth / 2, ly - tilehalfwidth / 2, tilehalfwidth, tilehalfwidth);
             }
         }
     }
@@ -252,16 +270,16 @@ public class KaartDisplay extends JPanel implements PlanControl {
             Coordinaat start = e.getKey().getStad().getCoordinaat();
             for (Handel dst : e.getValue()) {
                 Coordinaat end = dst.getStad().getCoordinaat();
-                int x = start.getX() * tilesize + 7;
-                int y = start.getY() * tilesize + 7;
+                int x = start.getX() * tilesize + tilehalfwidth;
+                int y = start.getY() * tilesize + tilehalfwidth;
                 g.setColor(new Color(e.getKey().getStad().hashCode() & 0x00FFFFFF | 0x000000FF));
-                g.fillOval(x - 6, y - 3, 7, 7);
-                int x2 = end.getX() * tilesize + 7;
-                int y2 = end.getY() * tilesize + 7;
+                g.fillOval(x - 6, y - tilehalfwidth / 2, tilehalfwidth, tilehalfwidth);
+                int x2 = end.getX() * tilesize + tilehalfwidth;
+                int y2 = end.getY() * tilesize + tilehalfwidth;
                 g.setColor(new Color(dst.getHandelswaar().hashCode() & 0x00FFFFFF | 0x00FF0000));
-                g.drawLine(x - 3, y, x2 + 9, y2);
+                g.drawLine(x - tilehalfwidth / 2, y, x2 + 9, y2);
                 g.setColor(new Color(dst.getStad().hashCode() & 0x00FFFFFF | 0x000000FF));
-                g.drawOval(x2 + 6, y2 - 3, 7, 7);
+                g.drawOval(x2 + 6, y2 - tilehalfwidth / 2, tilehalfwidth, tilehalfwidth);
             }
         }
     }
@@ -275,7 +293,7 @@ public class KaartDisplay extends JPanel implements PlanControl {
             if (HandelType.BIEDT.equals(h.getHandelType())) {
                 if (!pairs.containsKey(h)) {
                     pairs.put(h, new ArrayList<>());
-                } 
+                }
             }
         }
         for (Handel h : handel) {
@@ -291,11 +309,16 @@ public class KaartDisplay extends JPanel implements PlanControl {
     }
 
     private void drawOpenClosed(Graphics2D g, Map<Coordinaat, ?> coords, Color c) {
-        g.setColor(c);
+        g.setFont(font);
         for (Map.Entry<Coordinaat, ?> e : coords.entrySet()) {
-            int x = e.getKey().getX() * tilesize + 4;
-            int y = e.getKey().getY() * tilesize + 12;
-            g.drawString(limit(String.valueOf(e.getValue()), 2), x, y);
+            int x = e.getKey().getX() * tilesize;
+            int y = e.getKey().getY() * tilesize;
+            int tx = x + fontSize / 4;
+            int ty = y + fontSize;
+            g.setColor(FOG);
+            g.fillRect(x, y, tilesize, tilesize);
+            g.setColor(c);
+            g.drawString(limit(String.valueOf(e.getValue()), 2), tx, ty);
         }
     }
 
@@ -308,12 +331,13 @@ public class KaartDisplay extends JPanel implements PlanControl {
 
     private void drawOverlay(Graphics2D g) {
         g.setColor(OVERLAY_KLEUR);
+        g.setFont(font);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         for (int y = 0; y < overlay.length; y++) {
             for (int x = 0; x < overlay[0].length; x++) {
                 Integer value = overlay[y][x];
                 if (value != null) {
-                    g.drawString(String.valueOf(value), x * tilesize + 4, y * tilesize + 12);
+                    g.drawString(String.valueOf(value), x * tilesize + fontSize / 4, y * tilesize + fontSize);
                 }
             }
         }
@@ -326,8 +350,8 @@ public class KaartDisplay extends JPanel implements PlanControl {
         int ly = -1;
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         for (Stad stad : steden) {
-            int x = stad.getCoordinaat().getX() * tilesize + 7;
-            int y = stad.getCoordinaat().getY() * tilesize + 7;
+            int x = stad.getCoordinaat().getX() * tilesize + tilehalfwidth;
+            int y = stad.getCoordinaat().getY() * tilesize + tilehalfwidth;
             if (lx >= 0) {
                 g.drawLine(lx, ly, x, y);
             }
@@ -340,9 +364,9 @@ public class KaartDisplay extends JPanel implements PlanControl {
     private void tekenPad(Graphics2D g) {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(PAD_KLEUR);
-        int x = start.getX() * tilesize + 7;
-        int y = start.getY() * tilesize + 7;
-        g.fillOval(x - 3, y - 3, 7, 7);
+        int x = start.getX() * tilesize + tilehalfwidth;
+        int y = start.getY() * tilesize + tilehalfwidth;
+        g.fillOval(x - tilehalfwidth / 2, y - tilehalfwidth / 2, tilehalfwidth, tilehalfwidth);
         int lx = x;
         int ly = y;
         for (Richting r : pad.getBewegingen()) {
@@ -364,7 +388,7 @@ public class KaartDisplay extends JPanel implements PlanControl {
             lx = x;
             ly = y;
         }
-        g.fillOval(x - 3, y - 3, 7, 7);
+        g.fillOval(x - tilehalfwidth / 2, y - tilehalfwidth / 2, tilehalfwidth, tilehalfwidth);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
     }
 
@@ -400,7 +424,7 @@ public class KaartDisplay extends JPanel implements PlanControl {
         case GRASLAND:
             return getTile(odd ? 0 : 1, 1);
         case STAD:
-            return getTile(6, 0);
+            return getTile(6, odd ? 0 : 1);
         case ZEE:
             int edge = t[1][2] != TerreinType.ZEE ? 1 : 0; // E
             edge |= t[1][0] != TerreinType.ZEE ? 2 : 0; // W
@@ -449,7 +473,7 @@ public class KaartDisplay extends JPanel implements PlanControl {
             BufferedImage tmp = new BufferedImage(tilesize, tilesize, tiles.getType());
             Graphics g = tmp.getGraphics();
             try {
-                g.drawImage(tiles, -x * (tilesize + 1), -y * tilesize, null);
+                g.drawImage(tiles, -x * (tilesize + tilespacing), -y * tilesize, null);
             } finally {
                 g.dispose();
             }
@@ -457,6 +481,5 @@ public class KaartDisplay extends JPanel implements PlanControl {
         }
         return tileCache[y][x];
     }
-
 
 }
