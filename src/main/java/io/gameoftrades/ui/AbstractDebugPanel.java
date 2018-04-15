@@ -1,5 +1,6 @@
 package io.gameoftrades.ui;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,12 @@ import io.gameoftrades.model.markt.Handel;
 import io.gameoftrades.model.markt.Handelsplan;
 import io.gameoftrades.model.markt.actie.Actie;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
+import io.gameoftrades.ui.overlay.CoordinateOverlay;
+import io.gameoftrades.ui.overlay.HandelOverlay;
+import io.gameoftrades.ui.overlay.HandelsActieOverlay;
+import io.gameoftrades.ui.overlay.IntegerOverlay;
+import io.gameoftrades.ui.overlay.PadOverlay;
+import io.gameoftrades.ui.overlay.StedentourOverlay;
 
 /**
  * Abstracte klasse voor het debuggen van algoritmen. 
@@ -30,6 +37,9 @@ import io.gameoftrades.model.markt.actie.HandelsPositie;
 public abstract class AbstractDebugPanel extends JPanel {
 
     public class GuiDebugger implements Debugger {
+
+        private final Color OPEN_COLOR = new Color(64, 255, 64);
+        private final Color CLOSED_COLOR = new Color(255, 64, 64);
 
         @Override
         public void debugCoordinaten(Kaart kaart, List<Coordinaat> cs) {
@@ -42,51 +52,58 @@ public abstract class AbstractDebugPanel extends JPanel {
 
         @Override
         public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open) {
+            kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
-            kaartDisplay.setCoordinaten(open);
+            kaartDisplay.addOverlay(new CoordinateOverlay(open, OPEN_COLOR));
             waitForStep();
         }
 
         @Override
         public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open, Map<Coordinaat, ?> closed) {
+            kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
-            kaartDisplay.setOpenClosed(open, closed);
+            kaartDisplay.addOverlay(new CoordinateOverlay(open, OPEN_COLOR));
+            kaartDisplay.addOverlay(new CoordinateOverlay(closed, CLOSED_COLOR));
             waitForStep();
         }
 
         @Override
         public void debugRaster(Kaart kaart, Integer[][] raster) {
+            kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
-            kaartDisplay.setOverlay(raster);
+            kaartDisplay.addOverlay(new IntegerOverlay(raster));
             waitForStep();
         }
 
         @Override
         public void debugPad(Kaart kaart, Coordinaat start, Pad pad) {
+            kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
-            kaartDisplay.setPad(start, pad);
+            kaartDisplay.addOverlay(new PadOverlay(start, pad));
             waitForStep();
         }
 
         @Override
         public void debugSteden(Kaart kaart, List<Stad> gedaan) {
+            kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
-            kaartDisplay.setSteden(gedaan);
+            kaartDisplay.addOverlay(new StedentourOverlay(gedaan));
             waitForStep();
         }
 
         @Override
         public void debugHandel(Kaart kaart, List<Handel> handel) {
+            kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
-            kaartDisplay.setHandel(handel);
+            kaartDisplay.addOverlay(new HandelOverlay(handel));
             waitForStep();
         }
 
         @Override
         public void debugActies(Kaart kaart, HandelsPositie positie, List<Actie> acties) {
+            kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
-            kaartDisplay.setHandel(null);
-            kaartDisplay.setActies(positie, acties);
+            kaartDisplay.addOverlay(new HandelsActieOverlay(positie, acties));
             waitForStep();
         }
 
