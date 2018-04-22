@@ -2,7 +2,7 @@ package io.gameoftrades.ui;
 
 public enum TileSet {
 
-    T16("/game-of-trades-16x16.png", 16, 1, 10), T64("/game-of-trades-64x64.png", 64, 4, 32);
+    T16("/game-of-trades-16x16.png", 16, 1, 10),T32("/game-of-trades-32x32.png", 32, 2, 16), T64("/game-of-trades-64x64.png", 64, 4, 32);
 
     private String resource;
     private int tileSize;
