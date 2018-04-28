@@ -24,7 +24,7 @@ public class BoomOverlay implements Overlay {
     }
 
     private void draw(Graphics2D g, int tilesize, Tak parent, Tak child) {
-        g.setStroke(new BasicStroke(2.0f));
+        g.setStroke(new BasicStroke(tilesize / 16));
         int x1 = parent.getCoordinaat().getX();
         int y1 = parent.getCoordinaat().getY();
         int x2 = child.getCoordinaat().getX();
@@ -33,25 +33,25 @@ public class BoomOverlay implements Overlay {
         int x12 = x2 * tilesize + half;
         int y12 = y2 * tilesize + half;
         g.drawLine(x1 * tilesize + half, y1 * tilesize + half, x12, y12);
-        if (x1==x2) {
-            if (y1<y2) {
+        if (x1 == x2) {
+            if (y1 < y2) {
                 // s
-                g.drawLine(x12, y12, x12 + tilesize/4, y12 - tilesize/4);
-                g.drawLine(x12, y12, x12 - tilesize/4, y12 - tilesize/4);
+                g.drawLine(x12, y12, x12 + tilesize / 4, y12 - tilesize / 4);
+                g.drawLine(x12, y12, x12 - tilesize / 4, y12 - tilesize / 4);
             } else {
                 // n
-                g.drawLine(x12, y12, x12 + tilesize/4, y12 + tilesize/4);
-                g.drawLine(x12, y12, x12 - tilesize/4, y12 + tilesize/4);
+                g.drawLine(x12, y12, x12 + tilesize / 4, y12 + tilesize / 4);
+                g.drawLine(x12, y12, x12 - tilesize / 4, y12 + tilesize / 4);
             }
         } else {
-            if (x1>x2) {
+            if (x1 > x2) {
                 // e
-                g.drawLine(x12, y12, x12 + tilesize/4, y12 + tilesize/4);
-                g.drawLine(x12, y12, x12 + tilesize/4, y12 - tilesize/4);
+                g.drawLine(x12, y12, x12 + tilesize / 4, y12 + tilesize / 4);
+                g.drawLine(x12, y12, x12 + tilesize / 4, y12 - tilesize / 4);
             } else {
                 // w
-                g.drawLine(x12, y12, x12 - tilesize/4, y12 + tilesize/4);
-                g.drawLine(x12, y12, x12 - tilesize/4, y12 - tilesize/4);
+                g.drawLine(x12, y12, x12 - tilesize / 4, y12 + tilesize / 4);
+                g.drawLine(x12, y12, x12 - tilesize / 4, y12 - tilesize / 4);
             }
         }
         for (Tak sub : child.getTakken()) {

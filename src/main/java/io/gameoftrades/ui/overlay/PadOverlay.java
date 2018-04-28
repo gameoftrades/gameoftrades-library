@@ -1,5 +1,6 @@
 package io.gameoftrades.ui.overlay;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -25,6 +26,7 @@ public class PadOverlay implements Overlay {
     public void draw(Graphics2D g, Font font, int tilesize, int tilehalfwidth, int fontSize) {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(PAD_KLEUR);
+        g.setStroke(new BasicStroke(tilesize/16));
         int x = start.getX() * tilesize + tilehalfwidth;
         int y = start.getY() * tilesize + tilehalfwidth;
         g.fillOval(x - tilehalfwidth / 2, y - tilehalfwidth / 2, tilehalfwidth, tilehalfwidth);
