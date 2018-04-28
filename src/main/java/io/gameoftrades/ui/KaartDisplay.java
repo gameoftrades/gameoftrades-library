@@ -43,7 +43,7 @@ public class KaartDisplay extends JPanel implements PlanControl {
     private HandelsPositie positie;
 
     private List<HandelsPositieListener> listeners = new ArrayList<>();
-    
+
     private List<Overlay> overlays = new ArrayList<>();
 
     private PositieOverlay positieOverlay = new PositieOverlay(positie);
@@ -83,7 +83,7 @@ public class KaartDisplay extends JPanel implements PlanControl {
         overlays.clear();
         repaint();
     }
-    
+
     public void addOverlay(Overlay ov) {
         overlays.add(ov);
     }
@@ -125,7 +125,7 @@ public class KaartDisplay extends JPanel implements PlanControl {
         if (kaart != null) {
             tekenKaart(g);
         }
-        for (Overlay ov:overlays) {
+        for (Overlay ov : overlays) {
             ov.draw(g, font, tilesize, tilehalfwidth, fontSize);
         }
     }
@@ -155,6 +155,8 @@ public class KaartDisplay extends JPanel implements PlanControl {
 
     private BufferedImage toTile(TerreinType[][] t, boolean odd) {
         switch (t[1][1]) {
+        case DRAAK:
+            return getTile(6, 3);
         case BERG:
             return getTile(odd ? 0 : 1, 3);
         case BOS:

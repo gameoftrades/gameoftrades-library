@@ -23,7 +23,9 @@ public enum TerreinType {
     /** het overzichtelijke grasland */
     GRASLAND(true, 1, 'G'),
     /** stad, waar de handel is. */
-    STAD(true, 1, 'S');
+    STAD(true, 1, 'S'),
+    /** de gevaarlijke draak. */
+    DRAAK(true,15,'D');
 
     private boolean toegankelijk;
     private int bewegingspunten;
