@@ -11,6 +11,7 @@ import io.gameoftrades.model.markt.Handel;
 import io.gameoftrades.model.markt.Handelsplan;
 import io.gameoftrades.model.markt.actie.Actie;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
+import io.gameoftrades.ui.overlay.Overlay;
 
 /**
  * Implementatie van de Debugger interface die niets doet.
@@ -28,6 +29,10 @@ public class DummyDebugger implements Debugger {
 
     @Override
     public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open, Map<Coordinaat, ?> closed) {
+    }
+    
+    @Override
+    public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open, Map<Coordinaat, ?> closed, Coordinaat beste) {
     }
 
     @Override
@@ -64,5 +69,12 @@ public class DummyDebugger implements Debugger {
             }
         };
     }
+    
+    @Override
+    public void debugBoom(Kaart kaart, Tak tak) {
+    }
 
+    @Override
+    public void debugOverlay(Kaart kaart, Overlay... overlays) {
+    }
 }

@@ -14,6 +14,7 @@ import io.gameoftrades.model.markt.Handel;
 import io.gameoftrades.model.markt.Handelsplan;
 import io.gameoftrades.model.markt.actie.Actie;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
+import io.gameoftrades.ui.overlay.Overlay;
 
 /**
  * Rendert ascii art representaties van de kaart en paden.
@@ -50,18 +51,23 @@ public class AsciiArtDebugger implements Debugger {
     }
 
     @Override
+    public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open, Map<Coordinaat, ?> closed, Coordinaat beste) {
+        debugCoordinaten(kaart, open, closed);
+    }
+
+    @Override
     public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> map) {
-        System.out.println(render(kaart,3,(pos) -> {
-           Object o = map.get(pos);
-           if(o!=null) {
+        System.out.println(render(kaart, 3, (pos) -> {
+            Object o = map.get(pos);
+            if (o != null) {
                 String tmp = String.valueOf(o);
                 while (tmp.length() < 2) {
                     tmp = tmp + " ";
                 }
                 return tmp.substring(0, 2);
-           } else {
-               return null;
-           }
+            } else {
+                return null;
+            }
         }));
     }
 
@@ -97,6 +103,7 @@ public class AsciiArtDebugger implements Debugger {
         return new PlanControl() {
             private HandelsPositie positie = initieel;
             private int stap = 0;
+
             @Override
             public void nextStep() {
                 Actie a = plan.getActies().get(stap);
@@ -109,7 +116,7 @@ public class AsciiArtDebugger implements Debugger {
                 }
                 stap++;
             }
-            
+
             @Override
             public boolean hasNextStep() {
                 return stap < plan.getActies().size();
@@ -165,6 +172,14 @@ public class AsciiArtDebugger implements Debugger {
             sb.append(System.getProperty("line.separator"));
         }
         return sb.toString();
+    }
+
+    @Override
+    public void debugBoom(Kaart kaart, Tak tak) {
+    }
+    
+    @Override
+    public void debugOverlay(Kaart kaart, Overlay... overlays) {
     }
 
 }

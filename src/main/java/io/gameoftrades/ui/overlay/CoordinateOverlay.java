@@ -14,12 +14,22 @@ public class CoordinateOverlay implements Overlay {
     private Map<Coordinaat, ?> coords;
     private Color c;
 
+    private Coordinaat best;
+
+    private Color b;
+
     public CoordinateOverlay(Map<Coordinaat, ?> coords, Color c) {
         this.coords = coords;
         this.c = c;
-        
+
     }
-    
+
+    public CoordinateOverlay(Map<Coordinaat, ?> coords, Color c, Coordinaat best, Color b) {
+        this(coords, c);
+        this.best = best;
+        this.b = b;
+    }
+
     public void draw(Graphics2D g, Font font, int tilesize, int tilehalfwidth, int fontSize) {
         g.setFont(font);
         for (Map.Entry<Coordinaat, ?> e : coords.entrySet()) {
@@ -29,7 +39,11 @@ public class CoordinateOverlay implements Overlay {
             int ty = y + fontSize;
             g.setColor(FOG);
             g.fillRect(x, y, tilesize, tilesize);
-            g.setColor(c);
+            if (best != null && e.getKey().equals(best)) {
+                g.setColor(b);
+            } else {
+                g.setColor(c);
+            }
             g.drawString(limit(String.valueOf(e.getValue()), 2), tx, ty);
         }
     }
@@ -40,5 +54,5 @@ public class CoordinateOverlay implements Overlay {
         }
         return s;
     }
-    
+
 }

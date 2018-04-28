@@ -11,6 +11,7 @@ import io.gameoftrades.model.markt.Handel;
 import io.gameoftrades.model.markt.Handelsplan;
 import io.gameoftrades.model.markt.actie.Actie;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
+import io.gameoftrades.ui.overlay.Overlay;
 
 public interface Debugger {
 
@@ -29,6 +30,12 @@ public interface Debugger {
          */
         boolean hasNextStep();
 
+    }
+
+    public interface Tak {
+        Coordinaat getCoordinaat();
+
+        Tak[] getTakken();
     }
 
     /**
@@ -75,6 +82,18 @@ public interface Debugger {
     void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open, Map<Coordinaat, ?> closed);
 
     /**
+     * toont de eerste 2 karakters van de waarden van de map op de coordinaten van zijn key.  
+     * Mogelijk handig bij opdracht 1. 
+     * @param kaart de kaart.
+     * @param open een map van coordinaat, value paren (in groen).
+     * @param closed een map van coordinaat, value paren (in rood).
+     * @param beste het beste coordinaat (in geel).
+     */
+    void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open, Map<Coordinaat, ?> closed, Coordinaat beste);
+
+    void debugBoom(Kaart kaart, Tak tak);
+
+    /**
      * toont een lijn tussen de gegeven steden.
      * Handig bij opdracht 3.
      * @param kaart de kaart.
@@ -106,4 +125,11 @@ public interface Debugger {
      */
     PlanControl speelPlanAf(Handelsplan plan, HandelsPositie initieel);
 
+    /**
+     * Toont een of meerde overlays op de kaart.
+     * Met een overlay kun je zelf een visualisatie maken.
+     * @param kaart de kaart.
+     * @param overlays the overlays.
+     */
+    void debugOverlay(Kaart kaart, Overlay... overlays);
 }

@@ -22,10 +22,12 @@ import io.gameoftrades.model.markt.Handel;
 import io.gameoftrades.model.markt.Handelsplan;
 import io.gameoftrades.model.markt.actie.Actie;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
+import io.gameoftrades.ui.overlay.BoomOverlay;
 import io.gameoftrades.ui.overlay.CoordinateOverlay;
 import io.gameoftrades.ui.overlay.HandelOverlay;
 import io.gameoftrades.ui.overlay.HandelsActieOverlay;
 import io.gameoftrades.ui.overlay.IntegerOverlay;
+import io.gameoftrades.ui.overlay.Overlay;
 import io.gameoftrades.ui.overlay.PadOverlay;
 import io.gameoftrades.ui.overlay.StedentourOverlay;
 
@@ -40,6 +42,7 @@ public abstract class AbstractDebugPanel extends JPanel {
 
         private final Color OPEN_COLOR = new Color(64, 255, 64);
         private final Color CLOSED_COLOR = new Color(255, 64, 64);
+        private final Color BEST_COLOR = new Color(255, 255, 64);
 
         @Override
         public void debugCoordinaten(Kaart kaart, List<Coordinaat> cs) {
@@ -48,6 +51,16 @@ public abstract class AbstractDebugPanel extends JPanel {
                 map.put(c, "X");
             }
             debugCoordinaten(kaart, map);
+        }
+
+        @Override
+        public void debugOverlay(Kaart kaart, Overlay... overlays) {
+            kaartDisplay.reset();
+            kaartDisplay.setKaart(kaart);
+            for (Overlay o : overlays) {
+                kaartDisplay.addOverlay(o);
+            }
+            waitForStep();
         }
 
         @Override
@@ -64,6 +77,15 @@ public abstract class AbstractDebugPanel extends JPanel {
             kaartDisplay.setKaart(kaart);
             kaartDisplay.addOverlay(new CoordinateOverlay(open, OPEN_COLOR));
             kaartDisplay.addOverlay(new CoordinateOverlay(closed, CLOSED_COLOR));
+            waitForStep();
+        }
+
+        @Override
+        public void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open, Map<Coordinaat, ?> closed, Coordinaat best) {
+            kaartDisplay.reset();
+            kaartDisplay.setKaart(kaart);
+            kaartDisplay.addOverlay(new CoordinateOverlay(open, OPEN_COLOR, best, BEST_COLOR));
+            kaartDisplay.addOverlay(new CoordinateOverlay(closed, CLOSED_COLOR, best, BEST_COLOR));
             waitForStep();
         }
 
@@ -110,6 +132,14 @@ public abstract class AbstractDebugPanel extends JPanel {
         @Override
         public PlanControl speelPlanAf(Handelsplan plan, HandelsPositie initieel) {
             return kaartDisplay.setPlan(plan, initieel);
+        }
+
+        @Override
+        public void debugBoom(Kaart kaart, Tak tak) {
+            kaartDisplay.reset();
+            kaartDisplay.setKaart(kaart);
+            kaartDisplay.addOverlay(new BoomOverlay(tak));
+            waitForStep();
         }
     }
 
