@@ -14,19 +14,21 @@ public class PositieOverlay implements Overlay {
     public PositieOverlay(HandelsPositie positie) {
         setPositie(positie);
     }
-    
+
     public void setPositie(HandelsPositie positie) {
         this.positie = positie;
     }
-    
+
     @Override
     public void draw(Graphics2D g, Font font, int tilesize, int tilehalfwidth, int fontSize) {
-        g.setColor(new Color(0.8f, 1.0f, 0.8f, 0.8f));
-        Coordinaat coordinaat = positie.getCoordinaat();
-        int x = coordinaat.getX() * tilesize;
-        int y = coordinaat.getY() * tilesize;
-        g.fillOval(x, y, 16, 16);
+        if (positie != null) {
+            g.setColor(new Color(0.8f, 1.0f, 0.8f, 0.8f));
+            Coordinaat coordinaat = positie.getCoordinaat();
+            int size = tilehalfwidth / 2;
+            int x = coordinaat.getX() * tilesize + tilehalfwidth;
+            int y = coordinaat.getY() * tilesize + tilehalfwidth;
+            g.fillOval(x - size, y - size, tilehalfwidth, tilehalfwidth);
+        }
     }
 
-    
 }

@@ -1,5 +1,6 @@
 package io.gameoftrades.ui.overlay;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -23,14 +24,14 @@ public class HandelsActieOverlay implements Overlay {
     private HandelsPositie startPos;
     private List<Actie> acties;
 
-
     public HandelsActieOverlay(HandelsPositie pos, List<Actie> acties) {
         this.startPos = pos;
         this.acties = acties == null ? null : new ArrayList<>(acties);
     }
-    
+
     public void draw(Graphics2D g, Font font, int tilesize, int tilehalfwidth, int fontSize) {
         HandelsPositie pos = startPos;
+        g.setStroke(new BasicStroke(tilesize / 16));
         int lx = pos.getCoordinaat().getX() * tilesize + tilehalfwidth;
         int ly = pos.getCoordinaat().getY() * tilesize + tilehalfwidth;
         for (Actie a : acties) {
