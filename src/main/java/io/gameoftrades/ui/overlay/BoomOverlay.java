@@ -9,6 +9,8 @@ import io.gameoftrades.debug.Debugger.Tak;
 
 public class BoomOverlay implements Overlay {
 
+    public static final Color TREE_COLOR = new Color(96, 64, 96);
+
     private Tak root;
 
     public BoomOverlay(Tak root) {
@@ -17,7 +19,7 @@ public class BoomOverlay implements Overlay {
 
     @Override
     public void draw(Graphics2D g, Font font, int tilesize, int tilehalfwidth, int fontSize) {
-        g.setColor(Color.BLACK);
+        g.setColor(TREE_COLOR);
         for (Tak child : root.getTakken()) {
             draw(g, tilesize, root, child);
         }
@@ -36,22 +38,22 @@ public class BoomOverlay implements Overlay {
         if (x1 == x2) {
             if (y1 < y2) {
                 // s
-                g.drawLine(x12, y12, x12 + tilesize / 4, y12 - tilesize / 4);
-                g.drawLine(x12, y12, x12 - tilesize / 4, y12 - tilesize / 4);
+                g.drawLine(x12, y12, x12 + tilesize / 6, y12 - tilesize / 6);
+                g.drawLine(x12, y12, x12 - tilesize / 6, y12 - tilesize / 6);
             } else {
                 // n
-                g.drawLine(x12, y12, x12 + tilesize / 4, y12 + tilesize / 4);
-                g.drawLine(x12, y12, x12 - tilesize / 4, y12 + tilesize / 4);
+                g.drawLine(x12, y12, x12 + tilesize / 6, y12 + tilesize / 6);
+                g.drawLine(x12, y12, x12 - tilesize / 6, y12 + tilesize / 6);
             }
         } else {
             if (x1 > x2) {
                 // e
-                g.drawLine(x12, y12, x12 + tilesize / 4, y12 + tilesize / 4);
-                g.drawLine(x12, y12, x12 + tilesize / 4, y12 - tilesize / 4);
+                g.drawLine(x12, y12, x12 + tilesize / 6, y12 + tilesize / 6);
+                g.drawLine(x12, y12, x12 + tilesize / 6, y12 - tilesize / 6);
             } else {
                 // w
-                g.drawLine(x12, y12, x12 - tilesize / 4, y12 + tilesize / 4);
-                g.drawLine(x12, y12, x12 - tilesize / 4, y12 - tilesize / 4);
+                g.drawLine(x12, y12, x12 - tilesize / 6, y12 + tilesize / 6);
+                g.drawLine(x12, y12, x12 - tilesize / 6, y12 - tilesize / 6);
             }
         }
         for (Tak sub : child.getTakken()) {

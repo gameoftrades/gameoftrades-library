@@ -12,7 +12,7 @@ import io.gameoftrades.model.kaart.Richting;
 
 public class PadOverlay implements Overlay {
 
-    private static final Color PAD_KLEUR = new Color(220, 255, 220);
+    private static final Color PAD_KLEUR = new Color(255, 255, 255);
 
     private Coordinaat start;
     private Pad pad;

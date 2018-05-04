@@ -7,14 +7,14 @@ import java.awt.RenderingHints;
 
 public class IntegerOverlay implements Overlay {
 
-    private static final Color OVERLAY_KLEUR = new Color(240, 255, 240);
+    private static final Color OVERLAY_KLEUR = new Color(192, 0, 192);
 
     private Integer[][] overlay;
 
     public IntegerOverlay(Integer[][] overlay) {
         this.overlay = overlay;
     }
-    
+
     @Override
     public void draw(Graphics2D g, Font font, int tilesize, int tilehalfwidth, int fontSize) {
         g.setColor(OVERLAY_KLEUR);
