@@ -22,7 +22,7 @@ public class PositieOverlay implements Overlay {
     @Override
     public void draw(Graphics2D g, Font font, int tilesize, int tilehalfwidth, int fontSize) {
         if (positie != null) {
-            g.setColor(new Color(0.8f, 1.0f, 0.8f, 0.8f));
+            g.setColor(Color.WHITE);
             Coordinaat coordinaat = positie.getCoordinaat();
             int size = tilehalfwidth / 2;
             int x = coordinaat.getX() * tilesize + tilehalfwidth;
