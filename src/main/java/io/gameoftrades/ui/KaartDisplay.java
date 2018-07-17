@@ -76,6 +76,9 @@ public class KaartDisplay extends JPanel implements PlanControl {
         }
     }
 
+    /**
+     * reset de debugger en de overlays.
+     */
     public void reset() {
         plan = null;
         planStep = 0;
@@ -84,6 +87,10 @@ public class KaartDisplay extends JPanel implements PlanControl {
         repaint();
     }
 
+    /**
+     * Voegt een overlay met een visualisatie toe.
+     * @param ov de overlay.
+     */
     public void addOverlay(Overlay ov) {
         overlays.add(ov);
     }

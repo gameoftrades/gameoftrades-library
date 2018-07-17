@@ -11,6 +11,7 @@ import io.gameoftrades.model.markt.Handel;
 import io.gameoftrades.model.markt.Handelsplan;
 import io.gameoftrades.model.markt.actie.Actie;
 import io.gameoftrades.model.markt.actie.HandelsPositie;
+import io.gameoftrades.ui.KaartDisplay;
 import io.gameoftrades.ui.overlay.Overlay;
 
 public interface Debugger {
@@ -32,9 +33,18 @@ public interface Debugger {
 
     }
 
+    /**
+     * Interface om een boom te kunnen tekenen op het {@link KaartDisplay}. 
+     */
     public interface Tak {
+        /**
+         * @return het coordinaat van de tak.
+         */
         Coordinaat getCoordinaat();
 
+        /**
+         * @return de takken die vanaf deze tak afsplitsen.
+         */
         Tak[] getTakken();
     }
 
@@ -91,7 +101,12 @@ public interface Debugger {
      */
     void debugCoordinaten(Kaart kaart, Map<Coordinaat, ?> open, Map<Coordinaat, ?> closed, Coordinaat beste);
 
-    void debugBoom(Kaart kaart, Tak tak);
+    /**
+     * toont een boom structuur op de kaart. 
+     * @param kaart de kaart.
+     * @param stam de stam van de boom.
+     */
+    void debugBoom(Kaart kaart, Tak stam);
 
     /**
      * toont een lijn tussen de gegeven steden.
@@ -126,10 +141,11 @@ public interface Debugger {
     PlanControl speelPlanAf(Handelsplan plan, HandelsPositie initieel);
 
     /**
-     * Toont een of meerde overlays op de kaart.
+     * Toont een of meerdere overlays op de kaart.
      * Met een overlay kun je zelf een visualisatie maken.
      * @param kaart de kaart.
      * @param overlays the overlays.
      */
     void debugOverlay(Kaart kaart, Overlay... overlays);
+
 }

@@ -1,15 +1,20 @@
 package io.gameoftrades.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NavigableMap;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import io.gameoftrades.model.Handelaar;
 import io.gameoftrades.model.Wereld;
@@ -32,7 +37,7 @@ public class MainGui {
         NavigableMap<String, Handelaar> found = HandelaarScanner.vindImplementaties();
         Handelaar handelaar = found.get(id);
         if (handelaar != null) {
-            toon(handelaar, kaart);
+            toon(handelaar, TileSet.T16, kaart);
         } else {
             throw new IllegalArgumentException("Handelaar met ID " + id + " niet gevonden");
         }
@@ -43,7 +48,7 @@ public class MainGui {
      * @param handelaar de handelaar.
      * @param kaart de kaart.
      */
-    public static void toon(Handelaar handelaar, String kaart) {
+    public static void toon(Handelaar handelaar, TileSet tileSet, String kaart) {
         KaartDisplay display = new KaartDisplay();
         Wereld wereld = handelaar.nieuweWereldLader().laad(kaart);
         display.setKaart(wereld.getKaart());
@@ -68,7 +73,7 @@ public class MainGui {
         JPanel rightTop = new JPanel(new BorderLayout(8, 8));
         Box right = new Box(BoxLayout.Y_AXIS);
         rightTop.add(right, BorderLayout.NORTH);
-        panel.add(display, BorderLayout.WEST);
+        panel.add(MainGui.wrapInScrolPane(display,tileSet.getTileSize()), BorderLayout.WEST);
         panel.add(rightTop, BorderLayout.CENTER);
         right.add(Box.createVerticalStrut(8));
         right.add(spd);
@@ -83,6 +88,25 @@ public class MainGui {
         f.setContentPane(panel);
         f.setVisible(true);
 
+    }
+    
+    /**
+     * wraps a given component in a scroll pane.
+     * @param display the component.
+     * @param stepSize the scroll step size.
+     * @return the scrollpane containing the component.
+     */
+    public static JScrollPane wrapInScrolPane(JComponent display, int stepSize) {
+        JScrollPane scroll = new JScrollPane();
+        scroll.setViewportView(display);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scroll.setOpaque(true);
+        scroll.setBackground(new Color(240, 240, 240));
+        scroll.setBorder(BorderFactory.createEmptyBorder());
+        scroll.getVerticalScrollBar().setBlockIncrement(stepSize);
+        scroll.getVerticalScrollBar().setUnitIncrement(stepSize);
+        return scroll;
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
