@@ -27,7 +27,7 @@ Echter mocht je deze in een ander Maven project willen gebruiken dan kan dat met
 <dependency>
   <groupId>io.gameoftrades</groupId>
   <artifactId>gameoftrades-library</artifactId>
-  <version>0.4.0</version>
+  <version>0.5.0</version>
 </dependency>
 ```
 
