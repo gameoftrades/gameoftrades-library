@@ -49,7 +49,7 @@ public class MainGui {
      * @param kaart de kaart.
      */
     public static void toon(Handelaar handelaar, TileSet tileSet, String kaart) {
-        KaartDisplay display = new KaartDisplay();
+        KaartDisplay display = new KaartDisplay(tileSet);
         Wereld wereld = handelaar.nieuweWereldLader().laad(kaart);
         display.setKaart(wereld.getKaart());
 

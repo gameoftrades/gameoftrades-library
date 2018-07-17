@@ -60,6 +60,7 @@ public abstract class AbstractDebugPanel extends JPanel {
             for (Overlay o : overlays) {
                 kaartDisplay.addOverlay(o);
             }
+            kaartDisplay.repaint();
             waitForStep();
         }
 
@@ -68,6 +69,7 @@ public abstract class AbstractDebugPanel extends JPanel {
             kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
             kaartDisplay.addOverlay(new CoordinateOverlay(open, OPEN_COLOR));
+            kaartDisplay.repaint();
             waitForStep();
         }
 
@@ -77,6 +79,7 @@ public abstract class AbstractDebugPanel extends JPanel {
             kaartDisplay.setKaart(kaart);
             kaartDisplay.addOverlay(new CoordinateOverlay(open, OPEN_COLOR));
             kaartDisplay.addOverlay(new CoordinateOverlay(closed, CLOSED_COLOR));
+            kaartDisplay.repaint();
             waitForStep();
         }
 
@@ -86,6 +89,7 @@ public abstract class AbstractDebugPanel extends JPanel {
             kaartDisplay.setKaart(kaart);
             kaartDisplay.addOverlay(new CoordinateOverlay(open, OPEN_COLOR, best, BEST_COLOR));
             kaartDisplay.addOverlay(new CoordinateOverlay(closed, CLOSED_COLOR, best, BEST_COLOR));
+            kaartDisplay.repaint();
             waitForStep();
         }
 
@@ -94,6 +98,7 @@ public abstract class AbstractDebugPanel extends JPanel {
             kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
             kaartDisplay.addOverlay(new IntegerOverlay(raster));
+            kaartDisplay.repaint();
             waitForStep();
         }
 
@@ -102,6 +107,7 @@ public abstract class AbstractDebugPanel extends JPanel {
             kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
             kaartDisplay.addOverlay(new PadOverlay(start, pad));
+            kaartDisplay.repaint();
             waitForStep();
         }
 
@@ -110,6 +116,7 @@ public abstract class AbstractDebugPanel extends JPanel {
             kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
             kaartDisplay.addOverlay(new StedentourOverlay(gedaan));
+            kaartDisplay.repaint();
             waitForStep();
         }
 
@@ -118,6 +125,7 @@ public abstract class AbstractDebugPanel extends JPanel {
             kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
             kaartDisplay.addOverlay(new HandelOverlay(handel));
+            kaartDisplay.repaint();
             waitForStep();
         }
 
@@ -126,6 +134,7 @@ public abstract class AbstractDebugPanel extends JPanel {
             kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
             kaartDisplay.addOverlay(new HandelsActieOverlay(positie, acties));
+            kaartDisplay.repaint();
             waitForStep();
         }
 
@@ -139,6 +148,7 @@ public abstract class AbstractDebugPanel extends JPanel {
             kaartDisplay.reset();
             kaartDisplay.setKaart(kaart);
             kaartDisplay.addOverlay(new BoomOverlay(tak));
+            kaartDisplay.repaint();
             waitForStep();
         }
     }
