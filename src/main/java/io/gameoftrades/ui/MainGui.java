@@ -35,6 +35,9 @@ public class MainGui {
     private List<StedenTourAlgoritme> tspChoices = new ArrayList<>();
     private List<HandelsplanAlgoritme> hplans = new ArrayList<>();
     
+    /**
+     * @return een nieuwe builder voor de MainGui.
+     */
     public static MainGui builder() {
         return new MainGui();
     }
@@ -42,6 +45,11 @@ public class MainGui {
     private MainGui() {
     }
     
+    /**
+     * Voegt de lader en de algoritmen van een handelaar toe aan de Gui.
+     * @param h de handelaar.
+     * @return de builder.
+     */
     public MainGui add(Handelaar h) {
         lader = h.nieuweWereldLader();
         choices.add(h.nieuwSnelstePadAlgoritme());
@@ -72,8 +80,8 @@ public class MainGui {
 
     /**
      * Toont de GUI met de gegeven handelaar en kaart.
-     * @param handelaar de handelaar.
-     * @param kaart de kaart.
+     * @param tileset de tileset om te gebruiken.
+     * @param kaart de naam van de kaart om te laden.
      */
     public void toon(TileSet tileSet, String kaart) {
         Assert.notNull(lader);

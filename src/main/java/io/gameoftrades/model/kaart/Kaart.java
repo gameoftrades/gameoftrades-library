@@ -7,6 +7,12 @@ import io.gameoftrades.util.Assert;
  */
 public final class Kaart {
 
+    /**
+     * Maakt een nieuwe lege kaart met de gegeven omvang.
+     * @param breedte de breedte van de kaart.
+     * @param hoogte de hoogte van de kaart.
+     * @return de (lege) kaart.
+     */
     public static Kaart metOmvang(int breedte, int hoogte) {
         return new Kaart(breedte, hoogte);
     }
