@@ -9,10 +9,6 @@ import org.junit.Test;
 
 import io.gameoftrades.model.kaart.Coordinaat;
 import io.gameoftrades.model.kaart.Stad;
-import io.gameoftrades.model.markt.Handel;
-import io.gameoftrades.model.markt.HandelType;
-import io.gameoftrades.model.markt.Handelswaar;
-import io.gameoftrades.model.markt.Markt;
 
 public class MarktTest {
 
@@ -24,8 +20,8 @@ public class MarktTest {
 
     @Before
     public void init() {
-        stad1 = new Stad(Coordinaat.op(1, 1), "Stad1");
-        stad2 = new Stad(Coordinaat.op(2, 2), "Stad2");
+        stad1 = Stad.op(Coordinaat.op(1, 1), "Stad1");
+        stad2 = Stad.op(Coordinaat.op(2, 2), "Stad2");
         h1 = new Handel(stad1, HandelType.BIEDT, new Handelswaar("schapen"), 1);
         h2 = new Handel(stad2, HandelType.VRAAGT, new Handelswaar("schapen"), 1);
         h3 = new Handel(stad1, HandelType.VRAAGT, new Handelswaar("stenen"), 1);

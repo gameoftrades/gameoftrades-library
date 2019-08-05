@@ -7,16 +7,13 @@ import org.junit.Test;
 
 import io.gameoftrades.model.kaart.Coordinaat;
 import io.gameoftrades.model.kaart.Stad;
-import io.gameoftrades.model.markt.Handel;
-import io.gameoftrades.model.markt.HandelType;
-import io.gameoftrades.model.markt.Handelswaar;
 
 public class HandelTest {
 
     private Stad stad;
     @Before
     public void init() {
-        stad = new Stad(Coordinaat.op(1, 1), "Stad");
+        stad = Stad.op(Coordinaat.op(1, 1), "Stad");
     }
 
     @Test

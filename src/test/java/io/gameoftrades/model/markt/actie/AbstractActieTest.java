@@ -50,19 +50,19 @@ public abstract class AbstractActieTest {
 
     @Before
     public void init() {
-        kaart = new Kaart(2, 2);
-        new Terrein(kaart, Coordinaat.op(0, 0), TerreinType.STAD);
-        new Terrein(kaart, Coordinaat.op(0, 1), TerreinType.BERG);
-        new Terrein(kaart, Coordinaat.op(1, 0), TerreinType.GRASLAND);
-        new Terrein(kaart, Coordinaat.op(1, 1), TerreinType.STAD);
-        stad1 = new Stad(Coordinaat.op(0, 0), "Stad1");
-        stad2 = new Stad(Coordinaat.op(1, 1), "Stad2");
+        kaart = Kaart.metOmvang(2, 2);
+        Terrein.op(kaart, Coordinaat.op(0, 0), TerreinType.STAD);
+        Terrein.op(kaart, Coordinaat.op(0, 1), TerreinType.BERG);
+        Terrein.op(kaart, Coordinaat.op(1, 0), TerreinType.GRASLAND);
+        Terrein.op(kaart, Coordinaat.op(1, 1), TerreinType.STAD);
+        stad1 = Stad.op(Coordinaat.op(0, 0), "Stad1");
+        stad2 = Stad.op(Coordinaat.op(1, 1), "Stad2");
         h1 = new Handel(stad1, HandelType.BIEDT, new Handelswaar("schapen"), 2);
         h2 = new Handel(stad2, HandelType.BIEDT, new Handelswaar("stenen"), 1);
         h3 = new Handel(stad2, HandelType.VRAAGT, new Handelswaar("schapen"), 8);
         h4 = new Handel(stad1, HandelType.VRAAGT, new Handelswaar("stenen"), 4);
         markt = new Markt(Arrays.asList(new Handel[] { h1, h2, h3, h4 }));
-        wereld = new Wereld(kaart, Arrays.asList(new Stad[] { stad1, stad2 }), markt);
+        wereld = Wereld.van(kaart, Arrays.asList(new Stad[] { stad1, stad2 }), markt);
     }
 
 }

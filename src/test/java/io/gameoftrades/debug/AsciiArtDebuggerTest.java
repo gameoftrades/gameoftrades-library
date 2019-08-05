@@ -34,10 +34,10 @@ public class AsciiArtDebuggerTest {
     @Before
     public void init() {
         debug = new AsciiArtDebugger();
-        kaart = new Kaart(3, 3);
+        kaart = Kaart.metOmvang(3, 3);
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
-                new Terrein(kaart, Coordinaat.op(x, y), TerreinType.GRASLAND);
+                Terrein.op(kaart, Coordinaat.op(x, y), TerreinType.GRASLAND);
             }
         }
     }
@@ -66,7 +66,7 @@ public class AsciiArtDebuggerTest {
 
     @Test
     public void debugSteden() {
-        debug.debugSteden(kaart, Collections.singletonList(new Stad(Coordinaat.op(1, 1), "x")));
+        debug.debugSteden(kaart, Collections.singletonList(Stad.op(Coordinaat.op(1, 1), "x")));
     }
 
     @Test
@@ -99,16 +99,16 @@ public class AsciiArtDebuggerTest {
     @Test
     public void debugHandel() {
         List<Handel> handel = new ArrayList<>();
-        handel.add(new Handel(new Stad(Coordinaat.op(1, 1), "Stad"), HandelType.BIEDT, new Handelswaar("x"), 42));
+        handel.add(new Handel(Stad.op(Coordinaat.op(1, 1), "Stad"), HandelType.BIEDT, new Handelswaar("x"), 42));
         debug.debugHandel(kaart, handel);
     }
 
     @Test
     public void debugPlanActies() {
         List<Handel> handel = new ArrayList<>();
-        Stad stad = new Stad(Coordinaat.op(1, 1), "Stad");
+        Stad stad = Stad.op(Coordinaat.op(1, 1), "Stad");
         handel.add(new Handel(stad, HandelType.BIEDT, new Handelswaar("x"), 42));
-        Wereld w = new Wereld(kaart, Collections.singletonList(stad), new Markt(handel));
+        Wereld w = Wereld.van(kaart, Collections.singletonList(stad), new Markt(handel));
         HandelsPositie positie = new HandelsPositie(w, stad, 100, 1, 100);
 
         List<Actie> acties = new ArrayList<>();
@@ -122,9 +122,9 @@ public class AsciiArtDebuggerTest {
     @Test
     public void zouPlanMoetenAfspelen() {
         List<Handel> handel = new ArrayList<>();
-        Stad stad = new Stad(Coordinaat.op(1, 1), "Stad");
+        Stad stad = Stad.op(Coordinaat.op(1, 1), "Stad");
         handel.add(new Handel(stad, HandelType.BIEDT, new Handelswaar("x"), 42));
-        Wereld w = new Wereld(kaart, Collections.singletonList(stad), new Markt(handel));
+        Wereld w = Wereld.van(kaart, Collections.singletonList(stad), new Markt(handel));
         HandelsPositie positie = new HandelsPositie(w, stad, 100, 1, 100);
 
         List<Actie> acties = new ArrayList<>();

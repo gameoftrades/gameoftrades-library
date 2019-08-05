@@ -7,15 +7,19 @@ import io.gameoftrades.util.Assert;
  */
 public final class Stad {
 
-    private Coordinaat coordinaat;
-    private String naam;
-
     /**
      * maakt een nieuwe stad met de gegeven naam op het gegeven coordinaat.
      * @param coordinaat het coordinaat van de stad.
      * @param naam the naam van de stad.
      */
-    public Stad(Coordinaat coordinaat, String naam) {
+    public static Stad op(Coordinaat coordinaat, String naam) {
+        return new Stad(coordinaat,naam);
+    }
+    
+    private Coordinaat coordinaat;
+    private String naam;
+
+    private Stad(Coordinaat coordinaat, String naam) {
         Assert.notNull(coordinaat);
         Assert.notEmpty(naam);
         this.coordinaat = coordinaat;

@@ -14,11 +14,15 @@ import io.gameoftrades.util.Assert;
  */
 public class Wereld {
     
+    public static Wereld van(Kaart kaart, List<Stad> steden, Markt markt) {
+        return new Wereld(kaart, steden, markt);
+    }
+    
     private Kaart kaart;
     private Markt markt;
     private List<Stad> steden;
 
-    public Wereld(Kaart kaart, List<Stad> steden, Markt markt) {
+    private Wereld(Kaart kaart, List<Stad> steden, Markt markt) {
         Assert.notNull(kaart);
         Assert.notNull(steden);
         Assert.notNull(markt);

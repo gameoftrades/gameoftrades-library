@@ -16,11 +16,11 @@ public class WereldTest {
 
     @Test
     public void zouWereldMoetenMaken() {
-        Kaart kaart = new Kaart(0, 0);
+        Kaart kaart = Kaart.metOmvang(0, 0);
         List<Stad> steden = new ArrayList<>();
         Markt markt = new Markt(new ArrayList<>());
 
-        Wereld wereld = new Wereld(kaart, steden, markt);
+        Wereld wereld = Wereld.van(kaart, steden, markt);
 
         assertEquals(kaart, wereld.getKaart());
         assertEquals(steden, wereld.getSteden());

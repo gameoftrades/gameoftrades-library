@@ -16,11 +16,21 @@ import io.gameoftrades.util.Assert;
  */
 public final class Terrein {
 
+    /**
+     * Plaatst een stuk terrein op de kaart wanneer deze nog niet gevuld is.
+     * @param eigenaar de kaart.
+     * @param coordinaat het coordinaat op de kaart.
+     * @param type het terrein type.
+     */
+    public static void op(Kaart eigenaar, Coordinaat coordinaat, TerreinType type) {
+        new Terrein(eigenaar, coordinaat, type);
+    }
+    
     private Coordinaat coordinaat;
     private TerreinType terreinType;
     private Kaart eigenaar;
 
-    public Terrein(Kaart eigenaar, Coordinaat coordinaat, TerreinType type) {
+    Terrein(Kaart eigenaar, Coordinaat coordinaat, TerreinType type) {
         Assert.notNull(eigenaar);
         Assert.notNull(coordinaat);
         Assert.notNull(type);

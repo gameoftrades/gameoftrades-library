@@ -21,6 +21,8 @@ import io.gameoftrades.model.Wereld;
 import io.gameoftrades.model.algoritme.HandelsplanAlgoritme;
 import io.gameoftrades.model.algoritme.SnelstePadAlgoritme;
 import io.gameoftrades.model.algoritme.StedenTourAlgoritme;
+import io.gameoftrades.model.lader.WereldLader;
+import io.gameoftrades.util.Assert;
 import io.gameoftrades.util.HandelaarScanner;
 
 /**
@@ -28,19 +30,44 @@ import io.gameoftrades.util.HandelaarScanner;
  */
 public class MainGui {
 
-    /**
-     * scant het classpath voor Handelaren en toont de GUI met het gegeven handelaars id en kaart resource.
-     * @param kaart de kaart resource.
-     * @param id het handelaars (team) id.
-     */
-    public static void toon(String kaart, String id) {
-        NavigableMap<String, Handelaar> found = HandelaarScanner.vindImplementaties();
-        Handelaar handelaar = found.get(id);
-        if (handelaar != null) {
-            toon(handelaar, TileSet.T16, kaart);
-        } else {
-            throw new IllegalArgumentException("Handelaar met ID " + id + " niet gevonden");
-        }
+    private WereldLader lader = null;
+    private List<SnelstePadAlgoritme> choices = new ArrayList<>();
+    private List<StedenTourAlgoritme> tspChoices = new ArrayList<>();
+    private List<HandelsplanAlgoritme> hplans = new ArrayList<>();
+    
+    public static MainGui builder() {
+        return new MainGui();
+    }
+    
+    private MainGui() {
+    }
+    
+    public MainGui add(Handelaar h) {
+        lader = h.nieuweWereldLader();
+        choices.add(h.nieuwSnelstePadAlgoritme());
+        tspChoices.add(h.nieuwStedenTourAlgoritme());
+        hplans.add(h.nieuwHandelsplanAlgoritme());
+        return this;
+    }
+    
+    public MainGui setWereldLader(WereldLader lader) {
+        this.lader = lader;
+        return this;
+    }
+    
+    public MainGui add(SnelstePadAlgoritme sp) {
+        this.choices.add(sp);
+        return this;
+    }
+
+    public MainGui add(StedenTourAlgoritme tsp) {
+        this.tspChoices.add(tsp);
+        return this;
+    }
+    
+    public MainGui add(HandelsplanAlgoritme hp) {
+        this.hplans.add(hp);
+        return this;
     }
 
     /**
@@ -48,21 +75,14 @@ public class MainGui {
      * @param handelaar de handelaar.
      * @param kaart de kaart.
      */
-    public static void toon(Handelaar handelaar, TileSet tileSet, String kaart) {
+    public void toon(TileSet tileSet, String kaart) {
+        Assert.notNull(lader);
         KaartDisplay display = new KaartDisplay(tileSet);
-        Wereld wereld = handelaar.nieuweWereldLader().laad(kaart);
+        Wereld wereld = lader.laad(kaart);
         display.setKaart(wereld.getKaart());
 
-        List<SnelstePadAlgoritme> choices = new ArrayList<>();
-        choices.add(handelaar.nieuwSnelstePadAlgoritme());
         SnelstePadDebugPanel spd = new SnelstePadDebugPanel(display, wereld, choices);
-
-        List<StedenTourAlgoritme> tspChoices = new ArrayList<>();
-        tspChoices.add(handelaar.nieuwStedenTourAlgoritme());
         TspDebugPanel tsp = new TspDebugPanel(display, wereld, tspChoices);
-
-        List<HandelsplanAlgoritme> hplans = new ArrayList<>();
-        hplans.add(handelaar.nieuwHandelsplanAlgoritme());
         PlanDebugPanel pdb = new PlanDebugPanel(display, wereld, hplans);
 
         HandelsPositiePanel hpos = new HandelsPositiePanel();
@@ -116,6 +136,21 @@ public class MainGui {
             System.exit(-1);
         } else {
             toon(args[1], args[0]);
+        }
+    }
+
+    /**
+     * scant het classpath voor Handelaren en toont de GUI met het gegeven handelaars id en kaart resource.
+     * @param kaart de kaart resource.
+     * @param id het handelaars (team) id.
+     */
+    public static void toon(String kaart, String id) {
+        NavigableMap<String, Handelaar> found = HandelaarScanner.vindImplementaties();
+        Handelaar handelaar = found.get(id);
+        if (handelaar != null) {
+            builder().add(handelaar).toon(TileSet.T16, kaart);
+        } else {
+            throw new IllegalArgumentException("Handelaar met ID " + id + " niet gevonden");
         }
     }
 

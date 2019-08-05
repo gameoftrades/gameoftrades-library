@@ -7,9 +7,13 @@ import io.gameoftrades.util.Assert;
  */
 public final class Kaart {
 
+    public static Kaart metOmvang(int breedte, int hoogte) {
+        return new Kaart(breedte, hoogte);
+    }
+    
     private Terrein[][] terrein;
 
-    public Kaart(int breedte, int hoogte) {
+    private Kaart(int breedte, int hoogte) {
         Assert.notNegative(breedte);
         Assert.notNegative(hoogte);
         terrein = new Terrein[hoogte][breedte];
